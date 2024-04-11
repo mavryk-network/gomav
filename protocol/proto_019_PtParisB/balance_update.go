@@ -1,7 +1,6 @@
 package proto_019_PtParisB
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
 	"github.com/ecadlabs/gotez/v2/encoding"
 	"github.com/ecadlabs/gotez/v2/protocol/core"
 	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
@@ -85,9 +84,7 @@ type StakerSingle = proto_018_Proxford.StakerSingle
 type StakerShared = proto_018_Proxford.StakerShared
 type StakerBaker = proto_018_Proxford.StakerBaker
 
-type StakerBakerEdge struct {
-	Baker tz.PublicKeyHash `json:"baker"`
-}
+type StakerBakerEdge StakerBaker
 
 func (StakerBakerEdge) StakerKind() string { return "baker_edge" }
 
