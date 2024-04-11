@@ -1,4 +1,4 @@
-package proto_019_PtParisA
+package proto_019_PtParisB
 
 //go:generate go run ../../cmd/genmarshaller.go
 

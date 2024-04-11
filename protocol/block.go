@@ -12,7 +12,7 @@ import (
 	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
 	"github.com/ecadlabs/gotez/v2/protocol/proto_017_PtNairob"
 	"github.com/ecadlabs/gotez/v2/protocol/proto_018_Proxford"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_019_PtParisA"
+	"github.com/ecadlabs/gotez/v2/protocol/proto_019_PtParisB"
 )
 
 type BlockInfo interface {
@@ -31,8 +31,8 @@ type BlockHeaderInfo interface {
 
 func NewBlockInfo(proto *tz.ProtocolHash) (BlockInfo, error) {
 	switch *proto {
-	case core.Proto019PtParisA:
-		return new(proto_019_PtParisA.BlockInfo), nil
+	case core.Proto019PtParisB:
+		return new(proto_019_PtParisB.BlockInfo), nil
 	case core.Proto018Proxford:
 		return new(proto_018_Proxford.BlockInfo), nil
 	case core.Proto017PtNairob:
@@ -54,8 +54,8 @@ func NewBlockInfo(proto *tz.ProtocolHash) (BlockInfo, error) {
 
 func NewBlockHeaderInfo(proto *tz.ProtocolHash) (BlockHeaderInfo, error) {
 	switch *proto {
-	case core.Proto019PtParisA:
-		return new(proto_019_PtParisA.BlockHeaderInfo), nil
+	case core.Proto019PtParisB:
+		return new(proto_019_PtParisB.BlockHeaderInfo), nil
 	case core.Proto018Proxford:
 		return new(proto_018_Proxford.BlockHeaderInfo), nil
 	case core.Proto017PtNairob:

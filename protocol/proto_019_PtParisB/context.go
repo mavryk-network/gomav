@@ -1,4 +1,4 @@
-package proto_019_PtParisA
+package proto_019_PtParisB
 
 import (
 	"github.com/ecadlabs/gotez/v2/protocol/proto_015_PtLimaPt"
