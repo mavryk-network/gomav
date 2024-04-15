@@ -23,7 +23,16 @@ var testData = []protoTestData{
 	{
 		proto: &core.Proto019PtParisB,
 		blocks: []string{
-			"alpha",
+			"83409",
+			"83410",
+			"83411",
+			"83412",
+			"83413",
+			"83414",
+			"83415",
+			"83416",
+			"83417",
+			"83418",
 		},
 	},
 	{
