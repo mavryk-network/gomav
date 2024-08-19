@@ -23,7 +23,7 @@ func (v *EnumRegistry) RegisterEnum(variants, def any) {
 	val := reflect.ValueOf(variants)
 	t := val.Type()
 	if t.Kind() != reflect.Map || t.Key().Kind() != reflect.Uint8 || t.Elem().Kind() != reflect.Interface {
-		panic(fmt.Sprintf("gotez: map[uint8]interface{...} expected: %v", t))
+		panic(fmt.Sprintf("gomav: map[uint8]interface{...} expected: %v", t))
 	}
 	iftype := t.Elem()
 	out := enumData{
@@ -33,21 +33,21 @@ func (v *EnumRegistry) RegisterEnum(variants, def any) {
 	for iter.Next() {
 		t := iter.Value().Type()
 		if !t.Implements(iftype) {
-			panic(fmt.Sprintf("gotez: type %v doesn't implement %v", t, iftype))
+			panic(fmt.Sprintf("gomav: type %v doesn't implement %v", t, iftype))
 		}
 		out.variants[uint8(iter.Key().Uint())] = iter.Value().Elem().Type()
 	}
 	if def != nil {
 		t := reflect.TypeOf(def)
 		if !t.Implements(iftype) {
-			panic(fmt.Sprintf("gotez: type %v doesn't implement %v", t, iftype))
+			panic(fmt.Sprintf("gomav: type %v doesn't implement %v", t, iftype))
 		}
 		out.def = t
 	}
 	v.mtx.Lock()
 	defer v.mtx.Unlock()
 	if _, ok := v.types[t]; ok {
-		panic(fmt.Sprintf("gotez: duplicate enum type: %v", iftype))
+		panic(fmt.Sprintf("gomav: duplicate enum type: %v", iftype))
 	}
 	v.types[iftype] = &out
 }
@@ -109,7 +109,7 @@ func (e *EnumRegistry) tryEncode(out io.Writer, v reflect.Value, ctx *Context, p
 func (e *EnumRegistry) ListVariants(typ any) []any {
 	t := reflect.TypeOf(typ)
 	if t.Kind() != reflect.Pointer || t.Elem().Kind() != reflect.Interface {
-		panic("gotez: pointer to an interface expected")
+		panic("gomav: pointer to an interface expected")
 	}
 	t = t.Elem()
 	e.mtx.RLock()

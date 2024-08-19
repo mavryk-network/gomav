@@ -122,7 +122,7 @@ const (
 	Prim_signature                      Prim = 103
 	Prim_string                         Prim = 104
 	Prim_bytes                          Prim = 105
-	Prim_mutez                          Prim = 106
+	Prim_mumav                          Prim = 106
 	Prim_timestamp                      Prim = 107
 	Prim_unit                           Prim = 108
 	Prim_operation                      Prim = 109
@@ -163,7 +163,7 @@ const (
 	Prim_VIEW                           Prim = 144
 	Prim_view                           Prim = 145
 	Prim_constant                       Prim = 146
-	Prim_SUB_MUTEZ                      Prim = 147
+	Prim_SUB_MUMAV                      Prim = 147
 	Prim_tx_rollup_l2_address           Prim = 148
 	Prim_MIN_BLOCK_TIME                 Prim = 149
 	Prim_sapling_transaction            Prim = 150
@@ -282,7 +282,7 @@ var primStr = map[Prim]string{
 	Prim_signature:                      "signature",
 	Prim_string:                         "string",
 	Prim_bytes:                          "bytes",
-	Prim_mutez:                          "mutez",
+	Prim_mumav:                          "mumav",
 	Prim_timestamp:                      "timestamp",
 	Prim_unit:                           "unit",
 	Prim_operation:                      "operation",
@@ -323,7 +323,7 @@ var primStr = map[Prim]string{
 	Prim_VIEW:                           "VIEW",
 	Prim_view:                           "view",
 	Prim_constant:                       "constant",
-	Prim_SUB_MUTEZ:                      "SUB_MUTEZ",
+	Prim_SUB_MUMAV:                      "SUB_MUMAV",
 	Prim_tx_rollup_l2_address:           "tx_rollup_l2_address",
 	Prim_MIN_BLOCK_TIME:                 "MIN_BLOCK_TIME",
 	Prim_sapling_transaction:            "sapling_transaction",

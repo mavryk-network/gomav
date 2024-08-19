@@ -4,25 +4,25 @@ import (
 	"math/big"
 	"strconv"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/core/expression"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/core/expression"
 )
 
 //json:kind=OperationKind()
 type ZkRollupOrigination struct {
 	ManagerOperation
-	PublicParameters tz.Bytes            `tz:"dyn" json:"public_parameters"`
-	CircuitsInfo     []*CircuitsInfoElem `tz:"dyn" json:"circuits_info"`
-	InitState        tz.Bytes            `tz:"dyn" json:"init_state"`
+	PublicParameters mv.Bytes            `mv:"dyn" json:"public_parameters"`
+	CircuitsInfo     []*CircuitsInfoElem `mv:"dyn" json:"circuits_info"`
+	InitState        mv.Bytes            `mv:"dyn" json:"init_state"`
 	NbOps            int32               `json:"nb_ops"`
 }
 
 func (*ZkRollupOrigination) OperationKind() string { return "zk_rollup_origination" }
 
 type CircuitsInfoElem struct {
-	Value string          `tz:"dyn" json:"value"`
+	Value string          `mv:"dyn" json:"value"`
 	Tag   CircuitsInfoTag `json:"tag"`
 }
 
@@ -52,28 +52,28 @@ const (
 //json:kind=OperationKind()
 type ZkRollupPublish struct {
 	ManagerOperation
-	ZkRollup *tz.ZkRollupAddress `json:"zk_rollup"`
-	Op       []*ZkRollupOpElem   `tz:"dyn" json:"op"`
+	ZkRollup *mv.ZkRollupAddress `json:"zk_rollup"`
+	Op       []*ZkRollupOpElem   `mv:"dyn" json:"op"`
 }
 
 func (*ZkRollupPublish) OperationKind() string { return "zk_rollup_publish" }
 
 type ZkRollupOpElem struct {
 	Op     ZkRollupOp                 `json:"op"`
-	Ticket tz.Option1[ZkRollupTicket] `json:"ticket"`
+	Ticket mv.Option1[ZkRollupTicket] `json:"ticket"`
 }
 
 type ZkRollupOp struct {
 	OpCode   int32               `json:"op_code"`
 	Price    ZkRollupPrice       `json:"price"`
-	L1Dst    tz.PublicKeyHash    `json:"l1_dst"`
-	RollupID *tz.ZkRollupAddress `json:"rollup_id"`
-	Payload  tz.Bytes            `tz:"dyn" json:"payload"`
+	L1Dst    mv.PublicKeyHash    `json:"l1_dst"`
+	RollupID *mv.ZkRollupAddress `json:"rollup_id"`
+	Payload  mv.Bytes            `mv:"dyn" json:"payload"`
 }
 
 type ZkRollupPrice struct {
-	ID     *tz.ScriptExprHash `json:"id"`
-	Amount tz.BigInt          `json:"amount"`
+	ID     *mv.ScriptExprHash `json:"id"`
+	Amount mv.BigInt          `json:"amount"`
 }
 
 type ZkRollupTicket struct {
@@ -95,11 +95,11 @@ func (op *ZkRollupOriginationContentsAndResult) GetMetadata() any {
 
 type ZkRollupPublishResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
-	Size             tz.BigInt  `json:"size"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
+	Size             mv.BigInt  `json:"size"`
 }
 
-func (r *ZkRollupPublishResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
+func (r *ZkRollupPublishResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
 func (r *ZkRollupPublishResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
 	return r.Size.Int()
 }

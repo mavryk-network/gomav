@@ -3,22 +3,22 @@ package client
 //go:generate go run generate.go
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/protocol"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/latest"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/protocol"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/latest"
 )
 
 type BlockInfo = protocol.BlockInfo
 type BlockHeaderInfo = protocol.BlockHeaderInfo
-type BigUint = tz.BigUint
-type ChainID = tz.ChainID
+type BigUint = mv.BigUint
+type ChainID = mv.ChainID
 type OperationWithOptionalMetadata = latest.OperationWithOptionalMetadata
 type Constants = core.Constants
 type BlockShellHeader = core.ShellHeader
-type OperationHash = tz.OperationHash
+type OperationHash = mv.OperationHash
 type BlockProtocols = core.BlockProtocols
-type BlockHash = tz.BlockHash
+type BlockHash = mv.BlockHash
 
 type MetadataMode int
 
@@ -48,7 +48,7 @@ type BlockRequest struct {
 	Chain    string
 	Block    string
 	Metadata MetadataMode
-	Protocol *tz.ProtocolHash
+	Protocol *mv.ProtocolHash
 }
 
 type ContractRequest struct {
@@ -60,7 +60,7 @@ type ContractRequest struct {
 type ContextRequest struct {
 	Chain    string
 	Block    string
-	Protocol *tz.ProtocolHash
+	Protocol *mv.ProtocolHash
 }
 
 type RunOperationRequest struct {
@@ -76,30 +76,30 @@ type InjectOperationRequest struct {
 }
 
 type InjectRequestPayload struct {
-	Contents []byte `tz:"dyn"`
+	Contents []byte `mv:"dyn"`
 }
 
 type BasicBlockInfo struct {
-	Hash     *tz.BlockHash
-	Protocol *tz.ProtocolHash
+	Hash     *mv.BlockHash
+	Protocol *mv.ProtocolHash
 }
 
 type HeadsRequest struct {
 	Chain        string
-	Protocol     *tz.ProtocolHash
-	NextProtocol *tz.ProtocolHash
+	Protocol     *mv.ProtocolHash
+	NextProtocol *mv.ProtocolHash
 }
 
 type Head struct {
-	Hash *tz.BlockHash `json:"hash"`
+	Hash *mv.BlockHash `json:"hash"`
 	core.ShellHeader
 	ProtocolData []byte `json:"protocol_data"` // not dyn, takes the rest
 }
 
 type Flag bool
 
-func newConstants(p *tz.ProtocolHash) (Constants, error) { return protocol.NewConstants(p) }
-func newBlockInfo(p *tz.ProtocolHash) (BlockInfo, error) { return protocol.NewBlockInfo(p) }
-func newBlockHeaderInfo(p *tz.ProtocolHash) (BlockHeaderInfo, error) {
+func newConstants(p *mv.ProtocolHash) (Constants, error) { return protocol.NewConstants(p) }
+func newBlockInfo(p *mv.ProtocolHash) (BlockInfo, error) { return protocol.NewBlockInfo(p) }
+func newBlockHeaderInfo(p *mv.ProtocolHash) (BlockHeaderInfo, error) {
 	return protocol.NewBlockHeaderInfo(p)
 }

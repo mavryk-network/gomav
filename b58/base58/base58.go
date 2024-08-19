@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ecadlabs/gotez/v2/b58/prefix"
+	"github.com/mavryk-network/gomav/v2/b58/prefix"
 )
 
 const alphabetStart = 49
@@ -41,7 +41,7 @@ func Decode(src []byte) ([]byte, error) {
 	for ; i < len(src); i++ {
 		c := int(src[i]) - alphabetStart
 		if c < 0 || c >= len(base58alphabetF) || base58alphabetF[c] == -1 {
-			return nil, fmt.Errorf("gotez: base58 decoding error: unexpected character at position %d: %c", i, src[i])
+			return nil, fmt.Errorf("gomav: base58 decoding error: unexpected character at position %d: %c", i, src[i])
 		}
 		if base58alphabetF[c] != 0 {
 			break
@@ -52,7 +52,7 @@ func Decode(src []byte) ([]byte, error) {
 	for ; i < len(src); i++ {
 		c := int(src[i]) - alphabetStart
 		if c < 0 || c >= len(base58alphabetF) || base58alphabetF[c] == -1 {
-			return nil, fmt.Errorf("gotez: base58 decoding error: unexpected character at position %d: %c", i, src[i])
+			return nil, fmt.Errorf("gomav: base58 decoding error: unexpected character at position %d: %c", i, src[i])
 		}
 		carry := int(base58alphabetF[c])
 		// for every symbol x
@@ -120,14 +120,14 @@ func DecodeCheck(src []byte) ([]byte, error) {
 		return nil, err
 	}
 	if len(buf) < 4 {
-		return nil, fmt.Errorf("gotez: base58Check decoding error: data is too short: %d", len(buf))
+		return nil, fmt.Errorf("gomav: base58Check decoding error: data is too short: %d", len(buf))
 	}
 	data := buf[:len(buf)-4]
 	sum := buf[len(buf)-4:]
 	s0 := sha256.Sum256(data)
 	s1 := sha256.Sum256(s0[:])
 	if !bytes.Equal(sum, s1[:4]) {
-		return nil, errors.New("gotez: base58Check decoding error: invalid checksum")
+		return nil, errors.New("gomav: base58Check decoding error: invalid checksum")
 	}
 	return data, nil
 }
@@ -138,10 +138,10 @@ func EncodeCheck(data []byte) []byte {
 	return Encode(append(data, s1[:4]...))
 }
 
-// ErrPrefix is returned in case of unknown Tezos base58 prefix
-var ErrPrefix = errors.New("gotez: unknown Tezos base58 prefix")
+// ErrPrefix is returned in case of unknown Mavryk base58 prefix
+var ErrPrefix = errors.New("gomav: unknown Mavryk base58 prefix")
 
-func DecodeTZ(data []byte) (pre *prefix.Prefix, payload []byte, err error) {
+func DecodeMV(data []byte) (pre *prefix.Prefix, payload []byte, err error) {
 	buf, err := DecodeCheck(data)
 	if err != nil {
 		return
@@ -150,7 +150,7 @@ func DecodeTZ(data []byte) (pre *prefix.Prefix, payload []byte, err error) {
 		if bytes.HasPrefix(buf, p.Prefix) {
 			plLen := len(buf) - len(p.Prefix)
 			if p.Len != 0 && plLen != p.Len {
-				return p, nil, fmt.Errorf("gotez: invalid base58 message length: expected %d, got %d", p.Len, plLen)
+				return p, nil, fmt.Errorf("gomav: invalid base58 message length: expected %d, got %d", p.Len, plLen)
 			}
 			return p, buf[len(p.Prefix):], nil
 		}
@@ -159,9 +159,9 @@ func DecodeTZ(data []byte) (pre *prefix.Prefix, payload []byte, err error) {
 	return
 }
 
-func EncodeTZ(pre *prefix.Prefix, payload []byte) ([]byte, error) {
+func EncodeMV(pre *prefix.Prefix, payload []byte) ([]byte, error) {
 	if pre.Len != 0 && len(payload) != pre.Len {
-		return nil, fmt.Errorf("gotez: invalid base58 message length: expected %d, got %d", pre.Len, len(payload))
+		return nil, fmt.Errorf("gomav: invalid base58 message length: expected %d, got %d", pre.Len, len(payload))
 	}
 	data := make([]byte, len(pre.Prefix)+len(payload))
 	copy(data, pre.Prefix)

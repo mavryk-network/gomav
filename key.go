@@ -1,4 +1,4 @@
-package gotez
+package gomav
 
 import (
 	"bytes"
@@ -6,9 +6,9 @@ import (
 	"errors"
 	"math/big"
 
-	"github.com/ecadlabs/gotez/v2/b58/base58"
-	"github.com/ecadlabs/gotez/v2/b58/prefix"
-	"github.com/ecadlabs/gotez/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/b58/base58"
+	"github.com/mavryk-network/gomav/v2/b58/prefix"
+	"github.com/mavryk-network/gomav/v2/encoding"
 	"golang.org/x/crypto/blake2b"
 )
 
@@ -28,8 +28,8 @@ const (
 )
 
 var (
-	ErrInvalidDecryptedLen = errors.New("gotez: invalid decrypted key length")
-	ErrInvalidKeyLen       = errors.New("gotez: invalid key length")
+	ErrInvalidDecryptedLen = errors.New("gomav: invalid decrypted key length")
+	ErrInvalidKeyLen       = errors.New("gomav: invalid key length")
 )
 
 type PublicKeyHash interface {
@@ -115,7 +115,7 @@ func (k EncodedPublicKeyHash) MarshalText() (text []byte, err error) {
 }
 
 func (k *EncodedPublicKeyHash) UnmarshalText(text []byte) error {
-	pre, payload, err := base58.DecodeTZ(text)
+	pre, payload, err := base58.DecodeMV(text)
 	if err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (k *EncodedPublicKeyHash) UnmarshalText(text []byte) error {
 		result = &out
 
 	default:
-		return errors.New("gotez: unknown public key prefix")
+		return errors.New("gomav: unknown public key prefix")
 	}
 	var (
 		x   PublicKeyHash = result

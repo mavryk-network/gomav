@@ -1,30 +1,30 @@
 package proto_019_PtParisB
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_018_Proxford"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_018_Proxford"
 )
 
 type UnsignedOperation = proto_018_Proxford.UnsignedOperationImpl[OperationContents]
 type SignedOperation = proto_018_Proxford.SignedOperationImpl[OperationContents]
 type RunOperationRequest = proto_018_Proxford.RunOperationRequestImpl[RunOperationRequestContents]
 
-func NewRunOperationRequest(op *SignedOperation, chain *tz.ChainID) *RunOperationRequest {
+func NewRunOperationRequest(op *SignedOperation, chain *mv.ChainID) *RunOperationRequest {
 	return &RunOperationRequest{
 		Operation: op,
 		ChainID:   chain,
 	}
 }
 
-func NewUnsignedOperation(branch *tz.BlockHash, contents []OperationContents) *UnsignedOperation {
+func NewUnsignedOperation(branch *mv.BlockHash, contents []OperationContents) *UnsignedOperation {
 	return &UnsignedOperation{
 		Branch:   branch,
 		Contents: contents,
 	}
 }
 
-func NewSignedOperation(operation *UnsignedOperation, signature *tz.GenericSignature) *SignedOperation {
+func NewSignedOperation(operation *UnsignedOperation, signature *mv.GenericSignature) *SignedOperation {
 	return &SignedOperation{
 		UnsignedOperationImpl: *operation,
 		Signature:             signature,

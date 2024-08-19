@@ -1,4 +1,4 @@
-package gotez
+package gomav
 
 import (
 	"bytes"
@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/ecadlabs/gotez/v2/encoding"
 	"github.com/ecadlabs/pretty"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type Option[T any] struct {
@@ -100,7 +100,7 @@ func (op Option[T]) UnwrapOrZero() T {
 	return t
 }
 
-func (op *Option[T]) DecodeTZ(data []byte, ctx *encoding.Context) (rest []byte, err error) {
+func (op *Option[T]) DecodeMV(data []byte, ctx *encoding.Context) (rest []byte, err error) {
 	if len(data) == 0 {
 		// tail entry
 		*op = Option[T]{}
@@ -118,7 +118,7 @@ func (op *Option[T]) DecodeTZ(data []byte, ctx *encoding.Context) (rest []byte, 
 	return data, nil
 }
 
-func (op *Option[T]) EncodeTZ(ctx *encoding.Context) ([]byte, error) {
+func (op *Option[T]) EncodeMV(ctx *encoding.Context) ([]byte, error) {
 	var buf bytes.Buffer
 	if op.IsSome() {
 		buf.WriteByte(255)
@@ -166,7 +166,7 @@ type Option1[T any] struct {
 	Option[T]
 }
 
-func (op *Option1[T]) EncodeTZ(ctx *encoding.Context) ([]byte, error) {
+func (op *Option1[T]) EncodeMV(ctx *encoding.Context) ([]byte, error) {
 	var buf bytes.Buffer
 	if op.IsSome() {
 		buf.WriteByte(1)

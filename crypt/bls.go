@@ -5,7 +5,7 @@ import (
 
 	bls "github.com/ecadlabs/goblst"
 	"github.com/ecadlabs/goblst/minpk"
-	tz "github.com/ecadlabs/gotez/v2"
+	mv "github.com/mavryk-network/gomav/v2"
 )
 
 type BLSPrivateKey minpk.PrivateKey
@@ -27,8 +27,8 @@ func (priv *BLSPrivateKey) Sign(message []byte) (signature Signature, err error)
 	return (*BLSSignature)(sig), nil
 }
 
-func (priv *BLSPrivateKey) ToProtocol() tz.PrivateKey {
-	out, err := tz.NewBLSPrivateKey((*minpk.PrivateKey)(priv).Bytes())
+func (priv *BLSPrivateKey) ToProtocol() mv.PrivateKey {
+	out, err := mv.NewBLSPrivateKey((*minpk.PrivateKey)(priv).Bytes())
 	if err != nil {
 		panic(err)
 	}
@@ -62,8 +62,8 @@ func (pub *BLSPublicKey) String() string {
 	return pub.ToProtocol().String()
 }
 
-func (pub *BLSPublicKey) ToProtocol() tz.PublicKey {
-	out, err := tz.NewBLSPublicKey((*minpk.PublicKey)(pub).Bytes())
+func (pub *BLSPublicKey) ToProtocol() mv.PublicKey {
+	out, err := mv.NewBLSPublicKey((*minpk.PublicKey)(pub).Bytes())
 	if err != nil {
 		panic(err)
 	}
@@ -106,8 +106,8 @@ func (sig *BLSSignature) Verify(pub PublicKey, message []byte) bool {
 	return pub.VerifySignature(sig, message)
 }
 
-func (sig *BLSSignature) ToProtocol() tz.Signature {
-	return tz.NewBLSSignature((*minpk.Signature)(sig).Bytes())
+func (sig *BLSSignature) ToProtocol() mv.Signature {
+	return mv.NewBLSSignature((*minpk.Signature)(sig).Bytes())
 }
 
 func (sig *BLSSignature) MarshalText() (text []byte, err error) {

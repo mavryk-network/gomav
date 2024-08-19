@@ -1,24 +1,24 @@
 package proto_018_Proxford
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
 )
 
 type UnsignedProtocolBlockHeader struct {
-	PayloadHash      *tz.BlockPayloadHash          `json:"payload_hash"`
+	PayloadHash      *mv.BlockPayloadHash          `json:"payload_hash"`
 	PayloadRound     int32                         `json:"payload_round"`
-	ProofOfWorkNonce *tz.Bytes8                    `json:"proof_of_work_nonce"`
-	SeedNonceHash    tz.Option[*tz.CycleNonceHash] `json:"seed_nonce_hash"`
+	ProofOfWorkNonce *mv.Bytes8                    `json:"proof_of_work_nonce"`
+	SeedNonceHash    mv.Option[*mv.CycleNonceHash] `json:"seed_nonce_hash"`
 	PerBlockVotes    uint8                         `json:"per_block_votes"`
 }
 
-func (h *UnsignedProtocolBlockHeader) GetPayloadHash() *tz.BlockPayloadHash { return h.PayloadHash }
+func (h *UnsignedProtocolBlockHeader) GetPayloadHash() *mv.BlockPayloadHash { return h.PayloadHash }
 func (h *UnsignedProtocolBlockHeader) GetPayloadRound() int32               { return h.PayloadRound }
-func (h *UnsignedProtocolBlockHeader) GetProofOfWorkNonce() *tz.Bytes8 {
+func (h *UnsignedProtocolBlockHeader) GetProofOfWorkNonce() *mv.Bytes8 {
 	return h.ProofOfWorkNonce
 }
-func (h *UnsignedProtocolBlockHeader) GetSeedNonceHash() tz.Option[*tz.CycleNonceHash] {
+func (h *UnsignedProtocolBlockHeader) GetSeedNonceHash() mv.Option[*mv.CycleNonceHash] {
 	return h.SeedNonceHash
 }
 
@@ -33,38 +33,38 @@ func (header *UnsignedBlockHeader) GetShellHeader() *core.ShellHeader {
 
 type BlockHeader struct {
 	UnsignedBlockHeader
-	Signature *tz.GenericSignature `json:"signature"`
+	Signature *mv.GenericSignature `json:"signature"`
 }
 
-func (header *BlockHeader) GetSignature() (tz.Signature, error) {
+func (header *BlockHeader) GetSignature() (mv.Signature, error) {
 	return header.Signature, nil
 }
 
 type BlockHeaderInfo struct {
-	ChainID *tz.ChainID   `json:"chain_id"`
-	Hash    *tz.BlockHash `json:"hash"`
+	ChainID *mv.ChainID   `json:"chain_id"`
+	Hash    *mv.BlockHash `json:"hash"`
 	BlockHeader
 }
 
-func (block *BlockHeaderInfo) GetChainID() *tz.ChainID { return block.ChainID }
-func (block *BlockHeaderInfo) GetHash() *tz.BlockHash  { return block.Hash }
+func (block *BlockHeaderInfo) GetChainID() *mv.ChainID { return block.ChainID }
+func (block *BlockHeaderInfo) GetHash() *mv.BlockHash  { return block.Hash }
 
 type BlockInfo struct {
-	ChainID    *tz.ChainID                          `json:"chain_id"`
-	Hash       *tz.BlockHash                        `json:"hash"`
-	Header     BlockHeader                          `tz:"dyn" json:"header"`
-	Metadata   tz.Option[BlockMetadata]             `json:"metadata"`
-	Operations []core.OperationsList[GroupContents] `tz:"dyn" json:"operations"`
+	ChainID    *mv.ChainID                          `json:"chain_id"`
+	Hash       *mv.BlockHash                        `json:"hash"`
+	Header     BlockHeader                          `mv:"dyn" json:"header"`
+	Metadata   mv.Option[BlockMetadata]             `json:"metadata"`
+	Operations []core.OperationsList[GroupContents] `mv:"dyn" json:"operations"`
 }
 
-func (block *BlockInfo) GetChainID() *tz.ChainID     { return block.ChainID }
-func (block *BlockInfo) GetHash() *tz.BlockHash      { return block.Hash }
+func (block *BlockInfo) GetChainID() *mv.ChainID     { return block.ChainID }
+func (block *BlockInfo) GetHash() *mv.BlockHash      { return block.Hash }
 func (block *BlockInfo) GetHeader() core.BlockHeader { return &block.Header }
-func (block *BlockInfo) GetMetadata() tz.Option[core.BlockMetadata] {
+func (block *BlockInfo) GetMetadata() mv.Option[core.BlockMetadata] {
 	if m, ok := block.Metadata.CheckUnwrapPtr(); ok {
-		return tz.Some[core.BlockMetadata](m)
+		return mv.Some[core.BlockMetadata](m)
 	}
-	return tz.None[core.BlockMetadata]()
+	return mv.None[core.BlockMetadata]()
 }
 
 func (block *BlockInfo) GetOperations() [][]core.OperationsGroup {
@@ -76,39 +76,39 @@ func (block *BlockInfo) GetOperations() [][]core.OperationsGroup {
 }
 
 type BlockMetadata struct {
-	BlockMetadataContents `tz:"dyn"`
+	BlockMetadataContents `mv:"dyn"`
 }
 
 type BlockMetadataContents struct {
 	core.BlockMetadataHeader
-	Proposer                        tz.PublicKeyHash                   `json:"proposer"`
-	Baker                           tz.PublicKeyHash                   `json:"baker"`
+	Proposer                        mv.PublicKeyHash                   `json:"proposer"`
+	Baker                           mv.PublicKeyHash                   `json:"baker"`
 	LevelInfo                       core.LevelInfo                     `json:"level_info"`
 	VotingPeriodInfo                core.VotingPeriodInfo              `json:"voting_period_info"`
-	NonceHash                       tz.Option1[*tz.CycleNonceHash]     `json:"nonce_hash"`
-	Deactivated                     []tz.PublicKeyHash                 `tz:"dyn" json:"deactivated"`
-	BalanceUpdates                  []*BalanceUpdate                   `tz:"dyn" json:"balance_updates"`
+	NonceHash                       mv.Option1[*mv.CycleNonceHash]     `json:"nonce_hash"`
+	Deactivated                     []mv.PublicKeyHash                 `mv:"dyn" json:"deactivated"`
+	BalanceUpdates                  []*BalanceUpdate                   `mv:"dyn" json:"balance_updates"`
 	LiquidityBakingToggleEMA        int32                              `json:"liquidity_baking_toggle_ema"`
 	AdaptiveIssuanceVoteEMA         int32                              `json:"adaptive_issuance_vote_ema"`
-	AdaptiveIssuanceActivationCycle tz.Option[int32]                   `json:"adaptive_issuance_activation_cycle"`
-	ImplicitOperationsResults       []SuccessfulManagerOperationResult `tz:"dyn" json:"implicit_operations_results"`
-	ProposerConsensusKey            tz.PublicKeyHash                   `json:"proposer_consensus_key"`
-	BakerConsensusKey               tz.PublicKeyHash                   `json:"baker_consensus_key"`
-	ConsumedMilligas                tz.BigUint                         `json:"consumed_milligas"`
-	DALAttestation                  tz.Option[tz.BigInt]               `json:"dal_attestation"`
+	AdaptiveIssuanceActivationCycle mv.Option[int32]                   `json:"adaptive_issuance_activation_cycle"`
+	ImplicitOperationsResults       []SuccessfulManagerOperationResult `mv:"dyn" json:"implicit_operations_results"`
+	ProposerConsensusKey            mv.PublicKeyHash                   `json:"proposer_consensus_key"`
+	BakerConsensusKey               mv.PublicKeyHash                   `json:"baker_consensus_key"`
+	ConsumedMilligas                mv.BigUint                         `json:"consumed_milligas"`
+	DALAttestation                  mv.Option[mv.BigInt]               `json:"dal_attestation"`
 }
 
 func (m *BlockMetadata) GetMetadataHeader() *core.BlockMetadataHeader { return &m.BlockMetadataHeader }
-func (m *BlockMetadata) GetProposer() tz.PublicKeyHash                { return m.Proposer }
-func (m *BlockMetadata) GetBaker() tz.PublicKeyHash                   { return m.Baker }
+func (m *BlockMetadata) GetProposer() mv.PublicKeyHash                { return m.Proposer }
+func (m *BlockMetadata) GetBaker() mv.PublicKeyHash                   { return m.Baker }
 func (m *BlockMetadata) GetLevelInfo() *core.LevelInfo                { return &m.LevelInfo }
 func (m *BlockMetadata) GetVotingPeriodInfo() *core.VotingPeriodInfo  { return &m.VotingPeriodInfo }
-func (m *BlockMetadata) GetNonceHash() tz.Option[*tz.CycleNonceHash]  { return m.NonceHash.Option }
-func (m *BlockMetadata) GetConsumedGas() tz.Option[tz.BigUint]        { return tz.None[tz.BigUint]() }
-func (m *BlockMetadata) GetConsumedMilligas() tz.Option[tz.BigUint] {
-	return tz.Some(m.ConsumedMilligas)
+func (m *BlockMetadata) GetNonceHash() mv.Option[*mv.CycleNonceHash]  { return m.NonceHash.Option }
+func (m *BlockMetadata) GetConsumedGas() mv.Option[mv.BigUint]        { return mv.None[mv.BigUint]() }
+func (m *BlockMetadata) GetConsumedMilligas() mv.Option[mv.BigUint] {
+	return mv.Some(m.ConsumedMilligas)
 }
-func (m *BlockMetadata) GetDeactivated() []tz.PublicKeyHash { return m.Deactivated }
+func (m *BlockMetadata) GetDeactivated() []mv.PublicKeyHash { return m.Deactivated }
 func (m *BlockMetadata) GetBalanceUpdates() (updates []core.BalanceUpdate) {
 	updates = make([]core.BalanceUpdate, len(m.BalanceUpdates))
 	for i, u := range m.BalanceUpdates {
@@ -123,9 +123,9 @@ func (m *BlockMetadata) GetImplicitOperationsResults() []core.SuccessfulManagerO
 	}
 	return out
 }
-func (m *BlockMetadata) GetProposerConsensusKey() tz.Option[tz.PublicKeyHash] {
-	return tz.Some(m.ProposerConsensusKey)
+func (m *BlockMetadata) GetProposerConsensusKey() mv.Option[mv.PublicKeyHash] {
+	return mv.Some(m.ProposerConsensusKey)
 }
-func (m *BlockMetadata) GetBakerConsensusKey() tz.Option[tz.PublicKeyHash] {
-	return tz.Some(m.BakerConsensusKey)
+func (m *BlockMetadata) GetBakerConsensusKey() mv.Option[mv.PublicKeyHash] {
+	return mv.Some(m.BakerConsensusKey)
 }

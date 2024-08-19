@@ -1,4 +1,4 @@
-module github.com/ecadlabs/gotez/v2
+module github.com/mavryk-network/gomav/v2
 
 go 1.20
 

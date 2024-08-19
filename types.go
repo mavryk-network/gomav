@@ -1,4 +1,4 @@
-package gotez
+package gomav
 
 //go:generate go run generate.go
 
@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ecadlabs/gotez/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 const (
@@ -42,7 +42,7 @@ type ToComparable[H Comparable[K], K any] interface {
 
 type String string
 
-func (str *String) DecodeTZ(data []byte, ctx *encoding.Context) ([]byte, error) {
+func (str *String) DecodeMV(data []byte, ctx *encoding.Context) ([]byte, error) {
 	if len(data) < 1 {
 		return nil, fmt.Errorf("(string) %w", encoding.ErrBuffer(1))
 	}
@@ -54,7 +54,7 @@ func (str *String) DecodeTZ(data []byte, ctx *encoding.Context) ([]byte, error) 
 	return data[length+1:], nil
 }
 
-func (str String) EncodeTZ(ctx *encoding.Context) ([]byte, error) {
+func (str String) EncodeMV(ctx *encoding.Context) ([]byte, error) {
 	var buf bytes.Buffer
 	if len(str) > 255 {
 		return nil, errors.New("string is too long")

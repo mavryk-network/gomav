@@ -4,14 +4,14 @@ import (
 	"bytes"
 	"errors"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/b58/base58"
-	"github.com/ecadlabs/gotez/v2/b58/prefix"
-	"github.com/ecadlabs/gotez/v2/encoding"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/b58/base58"
+	"github.com/mavryk-network/gomav/v2/b58/prefix"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type TransactionDestination interface {
-	tz.Base58Encoder
+	mv.Base58Encoder
 	TransactionDestination()
 	Eq(other TransactionDestination) bool
 }
@@ -31,7 +31,7 @@ func init() {
 }
 
 type TxRollupDestination struct {
-	*tz.TXRollupAddress
+	*mv.TXRollupAddress
 	Padding uint8
 }
 
@@ -44,7 +44,7 @@ func (a TxRollupDestination) Eq(b TransactionDestination) bool {
 }
 
 type SmartRollupDestination struct {
-	*tz.SmartRollupAddress
+	*mv.SmartRollupAddress
 	Padding uint8
 }
 
@@ -57,7 +57,7 @@ func (a SmartRollupDestination) Eq(b TransactionDestination) bool {
 }
 
 type ZkRollupDestination struct {
-	*tz.ZkRollupAddress
+	*mv.ZkRollupAddress
 	Padding uint8
 }
 
@@ -70,53 +70,53 @@ func (a ZkRollupDestination) Eq(b TransactionDestination) bool {
 }
 
 func ParseTransactionDestination(src []byte) (TransactionDestination, error) {
-	pre, payload, err := base58.DecodeTZ(src)
+	pre, payload, err := base58.DecodeMV(src)
 	if err != nil {
 		return nil, err
 	}
 
 	switch pre {
 	case &prefix.Ed25519PublicKeyHash:
-		var out tz.Ed25519PublicKeyHash
+		var out mv.Ed25519PublicKeyHash
 		copy(out[:], payload)
 		return ImplicitContract{&out}, nil
 
 	case &prefix.Secp256k1PublicKeyHash:
-		var out tz.Secp256k1PublicKeyHash
+		var out mv.Secp256k1PublicKeyHash
 		copy(out[:], payload)
 		return ImplicitContract{&out}, nil
 
 	case &prefix.P256PublicKeyHash:
-		var out tz.P256PublicKeyHash
+		var out mv.P256PublicKeyHash
 		copy(out[:], payload)
 		return ImplicitContract{&out}, nil
 
 	case &prefix.BLS12_381PublicKeyHash:
-		var out tz.BLSPublicKeyHash
+		var out mv.BLSPublicKeyHash
 		copy(out[:], payload)
 		return ImplicitContract{&out}, nil
 
 	case &prefix.ContractHash:
-		var out tz.ContractHash
+		var out mv.ContractHash
 		copy(out[:], payload)
 		return OriginatedContract{&out, 0}, nil
 
 	case &prefix.TXRollupAddress:
-		var out tz.TXRollupAddress
+		var out mv.TXRollupAddress
 		copy(out[:], payload)
 		return TxRollupDestination{&out, 0}, nil
 
 	case &prefix.SmartRollupHash:
-		var out tz.SmartRollupAddress
+		var out mv.SmartRollupAddress
 		copy(out[:], payload)
 		return SmartRollupDestination{&out, 0}, nil
 
 	case &prefix.ZkRollupHash:
-		var out tz.ZkRollupAddress
+		var out mv.ZkRollupAddress
 		copy(out[:], payload)
 		return ZkRollupDestination{&out, 0}, nil
 
 	default:
-		return nil, errors.New("gotez: unknown destination prefix")
+		return nil, errors.New("gomav: unknown destination prefix")
 	}
 }

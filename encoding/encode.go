@@ -9,7 +9,7 @@ import (
 )
 
 type Encoder interface {
-	EncodeTZ(ctx *Context) ([]byte, error)
+	EncodeMV(ctx *Context) ([]byte, error)
 }
 
 var encoderType = reflect.TypeOf((*Encoder)(nil)).Elem()
@@ -58,7 +58,7 @@ func encodeInt(out io.Writer, val reflect.Value, path ErrorPath) error {
 		return wrapError(err, path)
 
 	default:
-		panic("gotez: unhandled type")
+		panic("gomav: unhandled type")
 	}
 }
 
@@ -104,7 +104,7 @@ func encodeBuiltin(out io.Writer, val reflect.Value, ctx *Context, path ErrorPat
 			if !f.IsExported() {
 				continue
 			}
-			fl := parseTag(f.Tag.Get("tz"))
+			fl := parseTag(f.Tag.Get("mv"))
 			if len(fl) != 0 {
 				if _, ok := fl[0].(flOmit); ok {
 					continue
@@ -182,7 +182,7 @@ func encodeValue(out io.Writer, val reflect.Value, ctx *Context, fl []flag, path
 			} else {
 				enc = val.Addr().Interface().(Encoder)
 			}
-			tmp, err := enc.EncodeTZ(ctx.clone())
+			tmp, err := enc.EncodeMV(ctx.clone())
 			if err, ok := err.(*Error); ok {
 				return &Error{
 					Path: append(path, err.Path...),
@@ -207,7 +207,7 @@ func encodeValue(out io.Writer, val reflect.Value, ctx *Context, fl []flag, path
 
 func Encode(out io.Writer, v any, opt ...Option) error {
 	if v == nil {
-		return errors.New("gotez: nil interface")
+		return errors.New("gomav: nil interface")
 	}
 	val := reflect.ValueOf(v)
 	ctx, flags := applyOptions(opt)

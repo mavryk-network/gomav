@@ -4,7 +4,7 @@ import (
 	"crypto"
 	"crypto/ed25519"
 
-	tz "github.com/ecadlabs/gotez/v2"
+	mv "github.com/mavryk-network/gomav/v2"
 )
 
 type Ed25519PrivateKey ed25519.PrivateKey
@@ -26,8 +26,8 @@ func (priv Ed25519PrivateKey) Sign(message []byte) (signature Signature, err err
 	return Ed25519Signature(ed25519.Sign(ed25519.PrivateKey(priv), digest[:])), nil
 }
 
-func (priv Ed25519PrivateKey) ToProtocol() tz.PrivateKey {
-	out, err := tz.NewEd25519PrivateKey(ed25519.PrivateKey(priv).Seed())
+func (priv Ed25519PrivateKey) ToProtocol() mv.PrivateKey {
+	out, err := mv.NewEd25519PrivateKey(ed25519.PrivateKey(priv).Seed())
 	if err != nil {
 		panic(err)
 	}
@@ -65,8 +65,8 @@ func (pub Ed25519PublicKey) String() string {
 	return pub.ToProtocol().String()
 }
 
-func (pub Ed25519PublicKey) ToProtocol() tz.PublicKey {
-	out, err := tz.NewEd25519PublicKey(pub)
+func (pub Ed25519PublicKey) ToProtocol() mv.PublicKey {
+	out, err := mv.NewEd25519PublicKey(pub)
 	if err != nil {
 		panic(err)
 	}
@@ -100,7 +100,7 @@ func (pub Ed25519PublicKey) Unwrap() crypto.PublicKey {
 
 type Ed25519Signature []byte
 
-func NewEd25519Signature(sig *tz.Ed25519Signature) Ed25519Signature {
+func NewEd25519Signature(sig *mv.Ed25519Signature) Ed25519Signature {
 	return Ed25519Signature(sig[:])
 }
 
@@ -116,8 +116,8 @@ func (sig Ed25519Signature) Verify(pub PublicKey, message []byte) bool {
 	return pub.VerifySignature(sig, message)
 }
 
-func (sig Ed25519Signature) ToProtocol() tz.Signature {
-	return tz.NewEd25519Signature(sig)
+func (sig Ed25519Signature) ToProtocol() mv.Signature {
+	return mv.NewEd25519Signature(sig)
 }
 
 func (sig Ed25519Signature) MarshalText() (text []byte, err error) {

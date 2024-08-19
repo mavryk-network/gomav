@@ -3,11 +3,11 @@ package proto_019_PtParisB
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_015_PtLimaPt"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_015_PtLimaPt"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
 )
 
 type ZkRollupOrigination = proto_015_PtLimaPt.ZkRollupOrigination
@@ -27,11 +27,11 @@ func (op *ZkRollupOriginationContentsAndResult) GetMetadata() any {
 
 type ZkRollupPublishResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
-	Size             tz.BigInt  `json:"size"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
+	Size             mv.BigInt  `json:"size"`
 }
 
-func (r *ZkRollupPublishResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
+func (r *ZkRollupPublishResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
 func (r *ZkRollupPublishResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
 	return r.Size.Int()
 }
@@ -64,12 +64,12 @@ func (op *ZkRollupPublishContentsAndResult) GetMetadata() any {
 
 type ZkRollupUpdateResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas    tz.BigUint `json:"consumed_milligas"`
-	PaidStorageSizeDiff tz.BigInt  `json:"paid_storage_size_diff"`
+	ConsumedMilligas    mv.BigUint `json:"consumed_milligas"`
+	PaidStorageSizeDiff mv.BigInt  `json:"paid_storage_size_diff"`
 }
 
-func (r *ZkRollupUpdateResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
-func (r *ZkRollupUpdateResultContents) GetPaidStorageSizeDiff() tz.BigInt {
+func (r *ZkRollupUpdateResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
+func (r *ZkRollupUpdateResultContents) GetPaidStorageSizeDiff() mv.BigInt {
 	return r.PaidStorageSizeDiff
 }
 func (r *ZkRollupUpdateResultContents) EstimateStorageSize(constants core.Constants) *big.Int {

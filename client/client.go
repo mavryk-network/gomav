@@ -1,4 +1,4 @@
-// Package client is a very limited Tezos RPC client library
+// Package client is a very limited Mavryk RPC client library
 package client
 
 import (
@@ -11,7 +11,7 @@ import (
 	"net/url"
 	"reflect"
 
-	"github.com/ecadlabs/gotez/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type Logger interface {
@@ -32,7 +32,7 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
-	return fmt.Sprintf("gotez-client: http status %d", e.Status)
+	return fmt.Sprintf("gomav-client: http status %d", e.Status)
 }
 
 func (c *Client) client() *http.Client {
@@ -77,7 +77,7 @@ func (c *Client) debug(format string, a ...any) {
 }
 
 func wrapErr(err error) error {
-	return fmt.Errorf("gotez-client: %w", err)
+	return fmt.Errorf("gomav-client: %w", err)
 }
 
 func (client *Client) request(ctx context.Context, method string, path string, params map[string]any, payload, out any) error {
@@ -172,7 +172,7 @@ func stream[T any](ctx context.Context, client *Client, path string, params map[
 			res.Body.Close()
 			close(streamCh)
 			close(errCh)
-			client.debug("gotez-client: stream closed")
+			client.debug("gomav-client: stream closed")
 		}()
 
 		for {

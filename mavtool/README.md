@@ -1,4 +1,4 @@
-# teztool
+# mavtool
 
 An operation injection helper
 
@@ -12,13 +12,13 @@ import (
     "fmt"
     "math/big"
 
-    "github.com/ecadlabs/gotez/v2"
-    "github.com/ecadlabs/gotez/v2/b58"
-    "github.com/ecadlabs/gotez/v2/client"
-    "github.com/ecadlabs/gotez/v2/crypt"
-    "github.com/ecadlabs/gotez/v2/protocol/core"
-    "github.com/ecadlabs/gotez/v2/protocol/latest"
-    "github.com/ecadlabs/gotez/v2/teztool"
+    "github.com/mavryk-network/gomav/v2"
+    "github.com/mavryk-network/gomav/v2/b58"
+    "github.com/mavryk-network/gomav/v2/client"
+    "github.com/mavryk-network/gomav/v2/crypt"
+    "github.com/mavryk-network/gomav/v2/protocol/core"
+    "github.com/mavryk-network/gomav/v2/protocol/latest"
+    "github.com/mavryk-network/gomav/v2/mavtool"
 )
 
 type logger struct{}
@@ -49,15 +49,15 @@ func TransferToWallet(url, chainID, address, privateKey string, amount *big.Int)
         return nil, err
     }
 
-    // initialize tezool
-    tool := teztool.New(&c, chain)
+    // initialize mavool
+    tool := mavtool.New(&c, chain)
     tool.DebugLogger = logger{}
 
     // initialize signer
-    signer := teztool.NewLocalSigner(priv)
+    signer := mavtool.NewLocalSigner(priv)
 
     // make a transaction
-    val, err := gotez.NewBigUint(amount)
+    val, err := gomav.NewBigUint(amount)
     if err != nil {
         // amount is negative
         return nil, err
@@ -70,6 +70,6 @@ func TransferToWallet(url, chainID, address, privateKey string, amount *big.Int)
         Destination: core.ImplicitContract{PublicKeyHash: addr},
     }
 
-    return tool.FillSignAndInjectWait(context.Background(), signer, []latest.OperationContents{&tx}, client.MetadataAlways, teztool.FillAll)
+    return tool.FillSignAndInjectWait(context.Background(), signer, []latest.OperationContents{&tx}, client.MetadataAlways, mavtool.FillAll)
 }
 ```

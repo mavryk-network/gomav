@@ -1,4 +1,4 @@
-package gotez
+package gomav
 
 import (
 	"crypto/sha512"
@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	ErrPrivateKeyDecrypt = errors.New("gotez: unable to decrypt the private key")
+	ErrPrivateKeyDecrypt = errors.New("gomav: unable to decrypt the private key")
 )
 
 const (

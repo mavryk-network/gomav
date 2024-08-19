@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ecadlabs/gotez/v2/b58"
+	"github.com/mavryk-network/gomav/v2/b58"
 )
 
 func main() {

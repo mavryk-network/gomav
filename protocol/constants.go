@@ -3,19 +3,19 @@ package protocol
 import (
 	"fmt"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_013_PtJakart"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_014_PtKathma"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_015_PtLimaPt"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_017_PtNairob"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_018_Proxford"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_019_PtParisB"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_013_PtJakart"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_014_PtKathma"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_015_PtLimaPt"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_017_PtNairob"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_018_Proxford"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_019_PtParisB"
 )
 
-func NewConstants(proto *tz.ProtocolHash) (constants core.Constants, err error) {
+func NewConstants(proto *mv.ProtocolHash) (constants core.Constants, err error) {
 	switch *proto {
 	case core.Proto019PtParisB:
 		constants = new(proto_019_PtParisB.Constants)
@@ -34,7 +34,7 @@ func NewConstants(proto *tz.ProtocolHash) (constants core.Constants, err error) 
 	case core.Proto012Psithaca:
 		constants = new(proto_012_Psithaca.Constants)
 	default:
-		return nil, fmt.Errorf("gotez: NewConstants: unknown protocol version %d", proto)
+		return nil, fmt.Errorf("gomav: NewConstants: unknown protocol version %d", proto)
 	}
 	return
 }

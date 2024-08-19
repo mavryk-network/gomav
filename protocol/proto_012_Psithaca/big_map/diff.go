@@ -1,15 +1,15 @@
 package big_map
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core/expression"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core/expression"
 )
 
 //go:generate go run ../../../cmd/genmarshaller.go
 
 type Diff struct {
-	Contents []Op `tz:"dyn" json:"contents"`
+	Contents []Op `mv:"dyn" json:"contents"`
 }
 
 type Op interface {
@@ -29,32 +29,32 @@ func init() {
 
 //json:action=BigMapDiffOp()
 type Update struct {
-	BigMap  tz.BigInt                        `json:"big_map"`
-	KeyHash *tz.ScriptExprHash               `json:"key_hash"`
+	BigMap  mv.BigInt                        `json:"big_map"`
+	KeyHash *mv.ScriptExprHash               `json:"key_hash"`
 	Key     expression.Expression            `json:"key"`
-	Value   tz.Option[expression.Expression] `json:"value"`
+	Value   mv.Option[expression.Expression] `json:"value"`
 }
 
 func (*Update) BigMapDiffOp() string { return "update" }
 
 //json:action=BigMapDiffOp()
 type Remove struct {
-	BigMap tz.BigInt `json:"big_map"`
+	BigMap mv.BigInt `json:"big_map"`
 }
 
 func (*Remove) BigMapDiffOp() string { return "remove" }
 
 //json:action=BigMapDiffOp()
 type Copy struct {
-	SourceBigMap      tz.BigInt `json:"source_big_map"`
-	DestinationBigMap tz.BigInt `json:"destination_big_map"`
+	SourceBigMap      mv.BigInt `json:"source_big_map"`
+	DestinationBigMap mv.BigInt `json:"destination_big_map"`
 }
 
 func (*Copy) BigMapDiffOp() string { return "copy" }
 
 //json:action=BigMapDiffOp()
 type Alloc struct {
-	BigMap    tz.BigInt             `json:"big_map"`
+	BigMap    mv.BigInt             `json:"big_map"`
 	KeyType   expression.Expression `json:"key_type"`
 	ValueType expression.Expression `json:"value_type"`
 }

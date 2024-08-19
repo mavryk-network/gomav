@@ -1,4 +1,4 @@
-// Package crypt is a wrapper around standard and 3rd party signature algorithms which adds a support of Tezos encodings of keys and signatures
+// Package crypt is a wrapper around standard and 3rd party signature algorithms which adds a support of Mavryk encodings of keys and signatures
 package crypt
 
 import (
@@ -12,8 +12,8 @@ import (
 
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"github.com/ecadlabs/goblst/minpk"
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/b58"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/b58"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/crypto/cryptobyte"
 	"golang.org/x/crypto/cryptobyte/asn1"
@@ -31,11 +31,11 @@ var (
 	ErrInvalidPrivateKey  = errors.New("crypt: invalid private key")
 )
 
-type PublicKeyHash = tz.PublicKeyHash
+type PublicKeyHash = mv.PublicKeyHash
 
 type PrivateKey interface {
-	tz.Base58Encoder
-	ToProtocol() tz.PrivateKey
+	mv.Base58Encoder
+	ToProtocol() mv.PrivateKey
 	Sign(message []byte) (signature Signature, err error)
 	Public() PublicKey
 	Equal(PrivateKey) bool
@@ -43,8 +43,8 @@ type PrivateKey interface {
 }
 
 type PublicKey interface {
-	tz.Base58Encoder
-	ToProtocol() tz.PublicKey
+	mv.Base58Encoder
+	ToProtocol() mv.PublicKey
 	VerifySignature(sig Signature, message []byte) bool
 	Hash() PublicKeyHash
 	Equal(PublicKey) bool
@@ -52,34 +52,34 @@ type PublicKey interface {
 }
 
 type Signature interface {
-	tz.Base58Encoder
-	ToProtocol() tz.Signature
+	mv.Base58Encoder
+	ToProtocol() mv.Signature
 	Verify(pub PublicKey, message []byte) bool
 }
 
-func NewPrivateKey(priv tz.PrivateKey) (PrivateKey, error) {
+func NewPrivateKey(priv mv.PrivateKey) (PrivateKey, error) {
 	switch key := priv.(type) {
-	case *tz.Ed25519PrivateKey:
+	case *mv.Ed25519PrivateKey:
 		if len(key) != ed25519.SeedSize {
 			panic("crypt: invalid Ed25519 private key length") // unlikely
 		}
 		return Ed25519PrivateKey(ed25519.NewKeyFromSeed(key[:])), nil
 
-	case *tz.Secp256k1PrivateKey:
+	case *mv.Secp256k1PrivateKey:
 		p, err := unmarshalPrivateKey(key[:], secp256k1.S256())
 		if err != nil {
 			return nil, err
 		}
 		return (*ECDSAPrivateKey)(p), nil
 
-	case *tz.P256PrivateKey:
+	case *mv.P256PrivateKey:
 		p, err := unmarshalPrivateKey(key[:], elliptic.P256())
 		if err != nil {
 			return nil, err
 		}
 		return (*ECDSAPrivateKey)(p), nil
 
-	case *tz.BLSPrivateKey:
+	case *mv.BLSPrivateKey:
 		p, err := minpk.PrivateKeyFromBytes(key[:])
 		if err != nil {
 			return nil, err
@@ -91,24 +91,24 @@ func NewPrivateKey(priv tz.PrivateKey) (PrivateKey, error) {
 	}
 }
 
-func NewPublicKey(pub tz.PublicKey) (PublicKey, error) {
+func NewPublicKey(pub mv.PublicKey) (PublicKey, error) {
 	switch pub := pub.(type) {
-	case *tz.Ed25519PublicKey:
+	case *mv.Ed25519PublicKey:
 		if len(pub) != ed25519.PublicKeySize {
 			panic("crypt: invalid ed25519 public key length") // unlikely
 		}
 		return Ed25519PublicKey(pub[:]), nil
 
-	case *tz.Secp256k1PublicKey, *tz.P256PublicKey:
+	case *mv.Secp256k1PublicKey, *mv.P256PublicKey:
 		var (
 			curve elliptic.Curve
 			data  []byte
 		)
 		switch key := pub.(type) {
-		case *tz.Secp256k1PublicKey:
+		case *mv.Secp256k1PublicKey:
 			curve = secp256k1.S256()
 			data = key[:]
-		case *tz.P256PublicKey:
+		case *mv.P256PublicKey:
 			curve = elliptic.P256()
 			data = key[:]
 		default:
@@ -124,7 +124,7 @@ func NewPublicKey(pub tz.PublicKey) (PublicKey, error) {
 			Y:     y,
 		}), nil
 
-	case *tz.BLSPublicKey:
+	case *mv.BLSPublicKey:
 		p, err := minpk.PublicKeyFromBytes(pub[:])
 
 		if err != nil {
@@ -177,18 +177,18 @@ func NewPublicKeyFrom(pub crypto.PublicKey) (PublicKey, error) {
 	}
 }
 
-func NewSignature(sig tz.Signature) (Signature, error) {
+func NewSignature(sig mv.Signature) (Signature, error) {
 	switch sig := sig.(type) {
-	case *tz.GenericSignature:
+	case *mv.GenericSignature:
 		return (*GenericSignature)(sig), nil
 
-	case *tz.Ed25519Signature:
+	case *mv.Ed25519Signature:
 		if len(sig) != ed25519.SignatureSize {
 			panic("crypt: invalid ed25519 signature length") // unlikely
 		}
 		return Ed25519Signature(sig[:]), nil
 
-	case *tz.Secp256k1Signature:
+	case *mv.Secp256k1Signature:
 		r, s := sig.Point()
 		return &ECDSASignature{
 			R:     r,
@@ -196,7 +196,7 @@ func NewSignature(sig tz.Signature) (Signature, error) {
 			Curve: secp256k1.S256(),
 		}, nil
 
-	case *tz.P256Signature:
+	case *mv.P256Signature:
 		r, s := sig.Point()
 		return &ECDSASignature{
 			R:     r,
@@ -204,7 +204,7 @@ func NewSignature(sig tz.Signature) (Signature, error) {
 			Curve: elliptic.P256(),
 		}, nil
 
-	case *tz.BLSSignature:
+	case *mv.BLSSignature:
 		s, err := minpk.SignatureFromBytes(sig[:])
 		if err != nil {
 			return nil, err
@@ -279,10 +279,10 @@ func ParseSignature(src []byte) (Signature, error) {
 	return NewSignature(sig)
 }
 
-type GenericSignature tz.GenericSignature
+type GenericSignature mv.GenericSignature
 
 func (sig *GenericSignature) ToBase58() []byte {
-	return (*tz.GenericSignature)(sig).ToBase58()
+	return (*mv.GenericSignature)(sig).ToBase58()
 }
 
 func (sig *GenericSignature) String() string {
@@ -293,6 +293,6 @@ func (sig *GenericSignature) Verify(pub PublicKey, message []byte) bool {
 	return pub.VerifySignature(sig, message)
 }
 
-func (sig *GenericSignature) ToProtocol() tz.Signature {
-	return (*tz.GenericSignature)(sig)
+func (sig *GenericSignature) ToProtocol() mv.Signature {
+	return (*mv.GenericSignature)(sig)
 }

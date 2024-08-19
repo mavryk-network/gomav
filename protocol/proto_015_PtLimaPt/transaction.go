@@ -3,14 +3,14 @@ package proto_015_PtLimaPt
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/core/expression"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca/lazy"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_013_PtJakart"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_014_PtKathma"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/core/expression"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca/lazy"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_013_PtJakart"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_014_PtKathma"
 )
 
 type ToScRollup = proto_014_PtKathma.ToScRollup
@@ -18,26 +18,26 @@ type ToScRollup = proto_014_PtKathma.ToScRollup
 //json:kind=OperationKind()
 type Transaction struct {
 	ManagerOperation
-	Amount      tz.BigUint            `json:"amount"`
+	Amount      mv.BigUint            `json:"amount"`
 	Destination core.ContractID       `json:"destination"`
-	Parameters  tz.Option[Parameters] `json:"parameters"`
+	Parameters  mv.Option[Parameters] `json:"parameters"`
 }
 
 func (*Transaction) OperationKind() string          { return "transaction" }
-func (t *Transaction) GetAmount() tz.BigUint        { return t.Amount }
+func (t *Transaction) GetAmount() mv.BigUint        { return t.Amount }
 func (t *Transaction) GetDestination() core.Address { return t.Destination }
-func (t *Transaction) GetParameters() tz.Option[core.Parameters] {
+func (t *Transaction) GetParameters() mv.Option[core.Parameters] {
 	if p, ok := t.Parameters.CheckUnwrapPtr(); ok {
-		return tz.Some[core.Parameters](p)
+		return mv.Some[core.Parameters](p)
 	}
-	return tz.None[core.Parameters]()
+	return mv.None[core.Parameters]()
 }
 
 var _ core.Transaction = (*Transaction)(nil)
 
 type Parameters struct {
 	Entrypoint Entrypoint            `json:"entrypoint"`
-	Value      expression.Expression `tz:"dyn" json:"value"`
+	Value      expression.Expression `mv:"dyn" json:"value"`
 }
 
 func (p *Parameters) GetEntrypoint() string           { return p.Entrypoint.Entrypoint() }
@@ -88,21 +88,21 @@ func init() {
 }
 
 type ToContract struct {
-	Storage tz.Option[expression.Expression] `json:"storage"`
+	Storage mv.Option[expression.Expression] `json:"storage"`
 	BalanceUpdates
-	TicketUpdates                []*TicketReceipt            `tz:"dyn" json:"ticket_updates"`
-	OriginatedContracts          []core.OriginatedContractID `tz:"dyn" json:"originated_contracts"`
-	ConsumedMilligas             tz.BigUint                  `json:"consumed_milligas"`
-	StorageSize                  tz.BigInt                   `json:"storage_size"`
-	PaidStorageSizeDiff          tz.BigInt                   `json:"paid_storage_size_diff"`
+	TicketUpdates                []*TicketReceipt            `mv:"dyn" json:"ticket_updates"`
+	OriginatedContracts          []core.OriginatedContractID `mv:"dyn" json:"originated_contracts"`
+	ConsumedMilligas             mv.BigUint                  `json:"consumed_milligas"`
+	StorageSize                  mv.BigInt                   `json:"storage_size"`
+	PaidStorageSizeDiff          mv.BigInt                   `json:"paid_storage_size_diff"`
 	AllocatedDestinationContract bool                        `json:"allocated_destination_contract"`
-	LazyStorageDiff              tz.Option[lazy.StorageDiff] `json:"lazy_storage_diff"`
+	LazyStorageDiff              mv.Option[lazy.StorageDiff] `json:"lazy_storage_diff"`
 }
 
 func (*ToContract) TransactionResultDestination()       {}
-func (r *ToContract) GetConsumedMilligas() tz.BigUint   { return r.ConsumedMilligas }
-func (r *ToContract) GetStorageSize() tz.BigInt         { return r.StorageSize }
-func (r *ToContract) GetPaidStorageSizeDiff() tz.BigInt { return r.PaidStorageSizeDiff }
+func (r *ToContract) GetConsumedMilligas() mv.BigUint   { return r.ConsumedMilligas }
+func (r *ToContract) GetStorageSize() mv.BigInt         { return r.StorageSize }
+func (r *ToContract) GetPaidStorageSizeDiff() mv.BigInt { return r.PaidStorageSizeDiff }
 func (r *ToContract) EstimateStorageSize(constants core.Constants) *big.Int {
 	x := r.PaidStorageSizeDiff.Int()
 	if r.AllocatedDestinationContract {
@@ -113,20 +113,20 @@ func (r *ToContract) EstimateStorageSize(constants core.Constants) *big.Int {
 
 type ToTxRollup struct {
 	BalanceUpdates
-	ConsumedMilligas    tz.BigUint         `json:"consumed_milligas"`
-	TicketHash          *tz.ScriptExprHash `json:"ticket_hash"`
-	PaidStorageSizeDiff tz.BigUint         `json:"paid_storage_size_diff"`
+	ConsumedMilligas    mv.BigUint         `json:"consumed_milligas"`
+	TicketHash          *mv.ScriptExprHash `json:"ticket_hash"`
+	PaidStorageSizeDiff mv.BigUint         `json:"paid_storage_size_diff"`
 }
 
 func (*ToTxRollup) TransactionResultDestination()     {}
-func (r *ToTxRollup) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
+func (r *ToTxRollup) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
 func (r *ToTxRollup) EstimateStorageSize(constants core.Constants) *big.Int {
 	return r.PaidStorageSizeDiff.Int()
 }
 
 type TicketReceipt struct {
 	TicketToken TicketToken            `json:"ticket_token"`
-	Updates     []*TicketReceiptUpdate `tz:"dyn" json:"updates"`
+	Updates     []*TicketReceiptUpdate `mv:"dyn" json:"updates"`
 }
 
 type TicketToken struct {
@@ -137,7 +137,7 @@ type TicketToken struct {
 
 type TicketReceiptUpdate struct {
 	Account core.TransactionDestination `json:"account"`
-	Amount  tz.BigInt                   `json:"amount"`
+	Amount  mv.BigInt                   `json:"amount"`
 }
 
 type TransactionResultContents = TransactionResultDestination
@@ -179,9 +179,9 @@ func init() {
 type TransactionInternalOperationResult struct {
 	Source      core.ContractID             `json:"source"`
 	Nonce       uint16                      `json:"nonce"`
-	Amount      tz.BigUint                  `json:"amount"`
+	Amount      mv.BigUint                  `json:"amount"`
 	Destination core.TransactionDestination `json:"destination"`
-	Parameters  tz.Option[Parameters]       `json:"parameters"`
+	Parameters  mv.Option[Parameters]       `json:"parameters"`
 	Result      TransactionResult           `json:"result"`
 }
 
@@ -199,15 +199,15 @@ func (r *TransactionInternalOperationResult) GetSource() core.TransactionDestina
 }
 func (r *TransactionInternalOperationResult) GetSourceAddress() core.ContractID { return r.Source }
 func (r *TransactionInternalOperationResult) GetNonce() uint16                  { return r.Nonce }
-func (t *TransactionInternalOperationResult) GetAmount() tz.BigUint             { return t.Amount }
+func (t *TransactionInternalOperationResult) GetAmount() mv.BigUint             { return t.Amount }
 func (t *TransactionInternalOperationResult) GetDestination() core.TransactionDestination {
 	return t.Destination
 }
-func (t *TransactionInternalOperationResult) GetParameters() tz.Option[core.Parameters] {
+func (t *TransactionInternalOperationResult) GetParameters() mv.Option[core.Parameters] {
 	if p, ok := t.Parameters.CheckUnwrapPtr(); ok {
-		return tz.Some[core.Parameters](p)
+		return mv.Some[core.Parameters](p)
 	}
-	return tz.None[core.Parameters]()
+	return mv.None[core.Parameters]()
 }
 func (r *TransactionInternalOperationResult) GetResult() core.ManagerOperationResult {
 	return r.Result

@@ -1,4 +1,4 @@
-// Package encoding handles Tezos binary encoding
+// Package encoding handles Mavryk binary encoding
 package encoding
 
 import (
