@@ -1,9 +1,9 @@
 package protocol
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/latest"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/latest"
 )
 
 type SignRequest interface {
@@ -11,24 +11,24 @@ type SignRequest interface {
 }
 
 type BlockSignRequest struct {
-	Chain       *tz.ChainID
+	Chain       *mv.ChainID
 	BlockHeader latest.UnsignedBlockHeader
 }
 
-func (r *BlockSignRequest) GetChainID() *tz.ChainID { return r.Chain }
+func (r *BlockSignRequest) GetChainID() *mv.ChainID { return r.Chain }
 func (r *BlockSignRequest) GetLevel() int32         { return r.BlockHeader.Level }
 func (r *BlockSignRequest) GetRound() int32         { return r.BlockHeader.PayloadRound }
 func (*BlockSignRequest) SignRequestKind() string   { return "block" }
 
 type PreattestationSignRequest struct {
-	Chain     *tz.ChainID
-	Branch    *tz.BlockHash
+	Chain     *mv.ChainID
+	Branch    *mv.BlockHash
 	Operation latest.InlinedPreendorsementContents
 }
 
 type PreendorsementSignRequest = PreattestationSignRequest
 
-func (r *PreattestationSignRequest) GetChainID() *tz.ChainID { return r.Chain }
+func (r *PreattestationSignRequest) GetChainID() *mv.ChainID { return r.Chain }
 func (r *PreattestationSignRequest) GetLevel() int32 {
 	return r.Operation.(*latest.Preattestation).Level
 }
@@ -38,14 +38,14 @@ func (r *PreattestationSignRequest) GetRound() int32 {
 func (*PreattestationSignRequest) SignRequestKind() string { return "preendorsement" }
 
 type AttestationSignRequest struct {
-	Chain     *tz.ChainID
-	Branch    *tz.BlockHash
+	Chain     *mv.ChainID
+	Branch    *mv.BlockHash
 	Operation latest.InlinedEndorsementContents
 }
 
 type EndorsementSignRequest = AttestationSignRequest
 
-func (r *AttestationSignRequest) GetChainID() *tz.ChainID { return r.Chain }
+func (r *AttestationSignRequest) GetChainID() *mv.ChainID { return r.Chain }
 func (r *AttestationSignRequest) GetLevel() int32         { return r.Operation.(*latest.Attestation).Level }
 func (r *AttestationSignRequest) GetRound() int32         { return r.Operation.(*latest.Attestation).Round }
 func (*AttestationSignRequest) SignRequestKind() string   { return "endorsement" }

@@ -1,8 +1,8 @@
 package core
 
 import (
-	"github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
+	"github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type BalanceUpdateOrigin interface {
@@ -43,7 +43,7 @@ func (BalanceUpdateOriginSimulation) BalanceUpdateOrigin() string { return "simu
 
 //json:origin=BalanceUpdateOrigin()
 type BalanceUpdateOriginDelayedOperation struct {
-	DelayedOperationHash gotez.OperationHash `json:"delayed_operation_hash"`
+	DelayedOperationHash gomav.OperationHash `json:"delayed_operation_hash"`
 }
 
 func (*BalanceUpdateOriginDelayedOperation) BalanceUpdateOrigin() string { return "delayed_operation" }

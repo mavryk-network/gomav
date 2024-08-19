@@ -1,5 +1,5 @@
-// Package teztool is an operation injection helper
-package teztool
+// Package mavtool is an operation injection helper
+package mavtool
 
 import (
 	"bytes"
@@ -8,24 +8,24 @@ import (
 	"errors"
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/client"
-	"github.com/ecadlabs/gotez/v2/crypt"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/latest"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/client"
+	"github.com/mavryk-network/gomav/v2/crypt"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/latest"
 )
 
 type Signer interface {
-	Sign(context.Context, []byte) (signature tz.Signature, err error)
+	Sign(context.Context, []byte) (signature mv.Signature, err error)
 }
 
 type LocalSigner struct {
 	crypt.PrivateKey
 }
 
-func (s LocalSigner) Sign(_ context.Context, message []byte) (signature tz.Signature, err error) {
+func (s LocalSigner) Sign(_ context.Context, message []byte) (signature mv.Signature, err error) {
 	sig, err := s.PrivateKey.Sign(message)
 	if err != nil {
 		return nil, err
@@ -39,11 +39,11 @@ func NewLocalSigner(priv crypt.PrivateKey) LocalSigner {
 
 type Tool struct {
 	Client      *client.Client
-	ChainID     *tz.ChainID
+	ChainID     *mv.ChainID
 	DebugLogger client.Logger
 }
 
-func New(client *client.Client, chain *tz.ChainID) *Tool {
+func New(client *client.Client, chain *mv.ChainID) *Tool {
 	return &Tool{
 		Client:  client,
 		ChainID: chain,
@@ -55,7 +55,7 @@ type fillAttrs struct {
 	fillCounter      bool
 	fillGasLimit     bool
 	fillStorageLimit bool
-	proto            *tz.ProtocolHash
+	proto            *mv.ProtocolHash
 }
 
 type FillAttr func(*fillAttrs)
@@ -71,28 +71,28 @@ func FillAll(a *fillAttrs) {
 	a.fillStorageLimit = true
 }
 
-func proto(p *tz.ProtocolHash) func(*fillAttrs) {
+func proto(p *mv.ProtocolHash) func(*fillAttrs) {
 	return func(fa *fillAttrs) { fa.proto = p }
 }
 
-func incCounter(x tz.BigUint) tz.BigUint {
+func incCounter(x mv.BigUint) mv.BigUint {
 	i := x.Int()
 	i.Add(i, big.NewInt(1))
-	out, _ := tz.NewBigUint(i)
+	out, _ := mv.NewBigUint(i)
 	return out
 }
 
 var (
 	gasSafetyMargin = big.NewInt(100)
-	// https://gitlab.com/tezos/tezos/-/blob/master/src/proto_alpha/lib_delegate/baking_configuration.ml#L99
-	minimalFeesMutez         = big.NewInt(100)
-	minimalMutezPerByte      = big.NewInt(1)
-	minimalNanotezPerGasUnit = big.NewInt(100)
+	// https://gitlab.com/mavryk-network/mavryk-protocol/-/blob/master/src/proto_alpha/lib_delegate/baking_configuration.ml#L99
+	minimalFeesMumav         = big.NewInt(100)
+	minimalMumavPerByte      = big.NewInt(1)
+	minimalNanomavPerGasUnit = big.NewInt(100)
 	storageSafetyMargin      = big.NewInt(20)
 )
 
-func mustBigUint(x *big.Int) tz.BigUint {
-	v, err := tz.NewBigUint(x)
+func mustBigUint(x *big.Int) mv.BigUint {
+	v, err := mv.NewBigUint(x)
 	if err != nil {
 		panic(err)
 	}
@@ -116,7 +116,7 @@ func (t *Tool) Fill(ctx context.Context, group *latest.UnsignedOperation, attrib
 		return nil
 	}
 
-	var proto *tz.ProtocolHash
+	var proto *mv.ProtocolHash
 	if attr.proto != nil {
 		proto = attr.proto
 	} else {
@@ -129,7 +129,7 @@ func (t *Tool) Fill(ctx context.Context, group *latest.UnsignedOperation, attrib
 
 	// fill counters
 	if attr.fillCounter {
-		counters := make(map[string]tz.BigUint)
+		counters := make(map[string]mv.BigUint)
 		for _, op := range group.Contents {
 			if op, ok := op.(core.ManagerOperation); ok {
 				src := op.GetSource()
@@ -145,7 +145,7 @@ func (t *Tool) Fill(ctx context.Context, group *latest.UnsignedOperation, attrib
 						if err != nil {
 							return err
 						}
-						t.debug("teztool: %v counter = %v", id, counter)
+						t.debug("mavtool: %v counter = %v", id, counter)
 					}
 					counter = incCounter(counter)
 					counters[id.String()] = counter
@@ -160,7 +160,7 @@ func (t *Tool) Fill(ctx context.Context, group *latest.UnsignedOperation, attrib
 	}
 
 	// get constants
-	t.debug("teztool: getting constants for %v", group.Branch)
+	t.debug("mavtool: getting constants for %v", group.Branch)
 	constants, err := t.Client.Constants(ctx, &client.ContextRequest{
 		Chain:    t.ChainID.String(),
 		Block:    group.Branch.String(),
@@ -193,13 +193,13 @@ func (t *Tool) Fill(ctx context.Context, group *latest.UnsignedOperation, attrib
 				op.SetStorageLimit(mustBigUint(constants.GetHardStorageLimitPerOperation().Int()))
 			}
 			if attr.fillFee {
-				op.SetFee(mustBigUint(minimalFeesMutez))
+				op.SetFee(mustBigUint(minimalFeesMumav))
 			}
 		}
 	}
 
-	groupZeroSig := latest.NewSignedOperation(group, &tz.GenericSignature{})
-	t.debug("teztool: dry run")
+	groupZeroSig := latest.NewSignedOperation(group, &mv.GenericSignature{})
+	t.debug("mavtool: dry run")
 	runResult, err := t.Client.RunOperation(ctx, &client.RunOperationRequest{
 		Chain:   t.ChainID.String(),
 		Block:   group.Branch.String(),
@@ -211,15 +211,15 @@ func (t *Tool) Fill(ctx context.Context, group *latest.UnsignedOperation, attrib
 
 	if t.DebugLogger != nil {
 		buf, _ := json.MarshalIndent(runResult, "", "    ")
-		t.debug("teztool: dry run result: %s", string(buf))
+		t.debug("mavtool: dry run result: %s", string(buf))
 	}
 
 	resultOps := runResult.Operations()
 	if len(resultOps) != len(group.Contents) {
-		return errors.New("teztool: unexpected number of operations in reply")
+		return errors.New("mavtool: unexpected number of operations in reply")
 	}
 
-	t.debug("teztool: collecting milligas and storage")
+	t.debug("mavtool: collecting milligas and storage")
 	for i, op := range group.Contents {
 		manager, ok := op.(core.ManagerOperation)
 		if !ok {
@@ -255,21 +255,21 @@ func (t *Tool) Fill(ctx context.Context, group *latest.UnsignedOperation, attrib
 
 		// compute fee
 		if attr.fillFee {
-			gasFee := new(big.Int).Mul(consumedGas, minimalNanotezPerGasUnit)
+			gasFee := new(big.Int).Mul(consumedGas, minimalNanomavPerGasUnit)
 			gasFee.Add(gasFee, big.NewInt(1000-1))
-			gasFee.Div(gasFee, big.NewInt(1000)) // nanotez*gas to utez*gas
+			gasFee.Div(gasFee, big.NewInt(1000)) // nanomav*gas to umav*gas
 
 			for {
-				dummyGrp := latest.NewSignedOperation(latest.NewUnsignedOperation(&tz.BlockHash{}, []latest.OperationContents{op}), &tz.GenericSignature{})
+				dummyGrp := latest.NewSignedOperation(latest.NewUnsignedOperation(&mv.BlockHash{}, []latest.OperationContents{op}), &mv.GenericSignature{})
 				var buf bytes.Buffer
 				if err := encoding.Encode(&buf, &dummyGrp); err != nil {
 					return err
 				}
 				opSize := buf.Len()
-				sizeFee := new(big.Int).Mul(minimalMutezPerByte, big.NewInt(int64(opSize)))
+				sizeFee := new(big.Int).Mul(minimalMumavPerByte, big.NewInt(int64(opSize)))
 
-				// https://gitlab.com/tezos/tezos/-/blob/master/src/proto_alpha/lib_client/injection.ml#L136
-				x := new(big.Int).Add(minimalFeesMutez, sizeFee)
+				// https://gitlab.com/mavryk-network/mavryk-protocol/-/blob/master/src/proto_alpha/lib_client/injection.ml#L136
+				x := new(big.Int).Add(minimalFeesMumav, sizeFee)
 				x.Add(x, gasFee)
 
 				done := x.Cmp(manager.GetFee().Int()) <= 0
@@ -314,7 +314,7 @@ func collectMilligasAndStorage(op core.OperationContents, constants core.Constan
 
 func Sign(ctx context.Context, signer Signer, grp *latest.UnsignedOperation) (*latest.SignedOperation, error) {
 	// forge operation
-	operation := latest.NewSignedOperation(grp, &tz.GenericSignature{})
+	operation := latest.NewSignedOperation(grp, &mv.GenericSignature{})
 
 	// hash the operation with magic byte added
 	var signReq protocol.SignRequest = (*protocol.GenericOperationSignRequest)(&operation.UnsignedOperationImpl)
@@ -330,9 +330,9 @@ func Sign(ctx context.Context, signer Signer, grp *latest.UnsignedOperation) (*l
 	}
 
 	switch sig := sig.(type) {
-	case tz.ConventionalSignature:
+	case mv.ConventionalSignature:
 		operation.Signature = sig.Generic()
-	case *tz.BLSSignature:
+	case *mv.BLSSignature:
 		prefix, suffix := sig.Split()
 		operation.Contents = append(operation.Contents, &latest.SignaturePrefix{SignaturePrefix: (*latest.BLSSignaturePrefix)(prefix)})
 		operation.Signature = suffix
@@ -342,12 +342,12 @@ func Sign(ctx context.Context, signer Signer, grp *latest.UnsignedOperation) (*l
 	return operation, nil
 }
 
-func (t *Tool) scanBlock(ctx context.Context, hash *tz.BlockHash, op *tz.OperationHash, meta client.MetadataMode) (core.OperationsGroup, error) {
+func (t *Tool) scanBlock(ctx context.Context, hash *mv.BlockHash, op *mv.OperationHash, meta client.MetadataMode) (core.OperationsGroup, error) {
 	basic, err := t.Client.BasicBlockInfo(ctx, t.ChainID.String(), hash.String())
 	if err != nil {
 		return nil, err
 	}
-	t.debug("teztool: scanning block %v", hash)
+	t.debug("mavtool: scanning block %v", hash)
 	block, err := t.Client.Block(ctx, &client.BlockRequest{
 		Chain:    t.ChainID.String(),
 		Block:    hash.String(),
@@ -391,7 +391,7 @@ func (t *Tool) InjectAndWait(ctx context.Context, req *client.InjectOperationReq
 	if err != nil {
 		return nil, err
 	}
-	t.debug("teztool: op hash: %v", opHash)
+	t.debug("mavtool: op hash: %v", opHash)
 
 	// scan blocks
 	for {
@@ -405,7 +405,7 @@ func (t *Tool) InjectAndWait(ctx context.Context, req *client.InjectOperationReq
 				return nil, err
 			}
 			if grp != nil {
-				t.debug("teztool: found in %v", head.Hash)
+				t.debug("mavtool: found in %v", head.Hash)
 				return grp, nil
 			}
 		}
@@ -421,11 +421,11 @@ func (t *Tool) injectionRequest(ctx context.Context, signer Signer, ops []latest
 		Branch:   bi.Hash,
 		Contents: ops,
 	}
-	t.debug("teztool: filling missing fields")
+	t.debug("mavtool: filling missing fields")
 	if err = t.Fill(ctx, &group, append([]FillAttr{proto(bi.Protocol)}, attributes...)...); err != nil {
 		return nil, err
 	}
-	t.debug("teztool: signing")
+	t.debug("mavtool: signing")
 	signedGroup, err := Sign(ctx, signer, &group)
 	if err != nil {
 		return nil, err
@@ -434,7 +434,7 @@ func (t *Tool) injectionRequest(ctx context.Context, signer Signer, ops []latest
 		buf, _ := json.MarshalIndent(signedGroup, "", "    ")
 		t.debug("%s", string(buf))
 	}
-	t.debug("teztool: encoding signed operation")
+	t.debug("mavtool: encoding signed operation")
 	var buf bytes.Buffer
 	if err = encoding.Encode(&buf, signedGroup); err != nil {
 		return nil, err
@@ -446,12 +446,12 @@ func (t *Tool) injectionRequest(ctx context.Context, signer Signer, ops []latest
 }
 
 // FillSignAndInject is an all in one function which fills missing fields and injects the operation without waiting
-func (t *Tool) FillSignAndInject(ctx context.Context, signer Signer, ops []latest.OperationContents, attributes ...FillAttr) (*tz.OperationHash, error) {
+func (t *Tool) FillSignAndInject(ctx context.Context, signer Signer, ops []latest.OperationContents, attributes ...FillAttr) (*mv.OperationHash, error) {
 	req, err := t.injectionRequest(ctx, signer, ops, attributes...)
 	if err != nil {
 		return nil, err
 	}
-	t.debug("teztool: injecting")
+	t.debug("mavtool: injecting")
 	return t.Client.InjectOperation(ctx, req)
 }
 
@@ -461,6 +461,6 @@ func (t *Tool) FillSignAndInjectWait(ctx context.Context, signer Signer, ops []l
 	if err != nil {
 		return nil, err
 	}
-	t.debug("teztool: injecting")
+	t.debug("mavtool: injecting")
 	return t.InjectAndWait(ctx, req, meta)
 }

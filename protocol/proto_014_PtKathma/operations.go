@@ -5,12 +5,12 @@ package proto_014_PtKathma
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/core/expression"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_013_PtJakart"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/core/expression"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_013_PtJakart"
 )
 
 type ManagerOperation = proto_012_Psithaca.ManagerOperation
@@ -34,10 +34,10 @@ type Entrypoint = proto_012_Psithaca.Entrypoint
 type DoubleBakingEvidence = proto_013_PtJakart.DoubleBakingEvidence
 
 type ConsumedGasResultContents struct {
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
 }
 
-func (r *ConsumedGasResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
+func (r *ConsumedGasResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
 
 type RevealResultContents = ConsumedGasResultContents
 
@@ -61,7 +61,7 @@ func (*DelegationSuccessfulManagerResult) OperationKind() string { return "deleg
 type DelegationInternalOperationResult struct {
 	Source   core.TransactionDestination `json:"source"`
 	Nonce    uint16                      `json:"nonce"`
-	Delegate tz.Option[tz.PublicKeyHash] `json:"delegate"`
+	Delegate mv.Option[mv.PublicKeyHash] `json:"delegate"`
 	Result   ConsumedGasResult           `json:"result"`
 }
 
@@ -98,7 +98,7 @@ func init() {
 //json:kind=OperationKind()
 type IncreasePaidStorage struct {
 	ManagerOperation
-	Amount      tz.BigInt                 `json:"amount"`
+	Amount      mv.BigInt                 `json:"amount"`
 	Destination core.OriginatedContractID `json:"destination"`
 }
 
@@ -106,10 +106,10 @@ func (*IncreasePaidStorage) OperationKind() string { return "increase_paid_stora
 
 type IncreasePaidStorageResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
 }
 
-func (r *IncreasePaidStorageResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *IncreasePaidStorageResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 
@@ -157,8 +157,8 @@ func (*VDFRevelation) OperationKind() string { return "vdf_revelation" }
 
 //json:kind=OperationKind()
 type DALSlotAvailability struct {
-	Endorser    tz.PublicKeyHash `json:"endorser"`
-	Endorsement tz.BigUint       `json:"endorsement"`
+	Endorser    mv.PublicKeyHash `json:"endorser"`
+	Endorsement mv.BigUint       `json:"endorsement"`
 }
 
 func (*DALSlotAvailability) OperationKind() string { return "dal_slot_availability" }
@@ -175,7 +175,7 @@ func (op *DALSlotAvailabilityContentsAndResult) GetMetadata() any {
 }
 
 type DALSlotAvailabilityMetadata struct {
-	Delegate tz.PublicKeyHash `json:"delegate"`
+	Delegate mv.PublicKeyHash `json:"delegate"`
 }
 
 //json:kind=OperationKind()
@@ -262,7 +262,7 @@ func (op *VDFRevelationContentsAndResult) GetMetadata() any {
 
 type EndorsementMetadata struct {
 	BalanceUpdates
-	Delegate         tz.PublicKeyHash `json:"delegate"`
+	Delegate         mv.PublicKeyHash `json:"delegate"`
 	EndorsementPower int32            `json:"endorsement_power"`
 }
 
@@ -314,15 +314,15 @@ func (op *DelegationContentsAndResult) GetMetadata() any {
 
 type RegisterGlobalConstantResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint         `json:"consumed_milligas"`
-	StorageSize      tz.BigInt          `json:"storage_size"`
-	GlobalAddress    *tz.ScriptExprHash `json:"global_address"`
+	ConsumedMilligas mv.BigUint         `json:"consumed_milligas"`
+	StorageSize      mv.BigInt          `json:"storage_size"`
+	GlobalAddress    *mv.ScriptExprHash `json:"global_address"`
 }
 
-func (r *RegisterGlobalConstantResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *RegisterGlobalConstantResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
-func (r *RegisterGlobalConstantResultContents) GetStorageSize() tz.BigInt { return r.StorageSize }
+func (r *RegisterGlobalConstantResultContents) GetStorageSize() mv.BigInt { return r.StorageSize }
 func (r *RegisterGlobalConstantResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
 	return r.StorageSize.Int()
 }
@@ -388,12 +388,12 @@ func (op *TransferTicketContentsAndResult) GetMetadata() any {
 
 type TransferTicketResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas    tz.BigUint `json:"consumed_milligas"`
-	PaidStorageSizeDiff tz.BigInt  `json:"paid_storage_size_diff"`
+	ConsumedMilligas    mv.BigUint `json:"consumed_milligas"`
+	PaidStorageSizeDiff mv.BigInt  `json:"paid_storage_size_diff"`
 }
 
-func (r *TransferTicketResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
-func (r *TransferTicketResultContents) GetPaidStorageSizeDiff() tz.BigInt {
+func (r *TransferTicketResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
+func (r *TransferTicketResultContents) GetPaidStorageSizeDiff() mv.BigInt {
 	return r.PaidStorageSizeDiff
 }
 func (r *TransferTicketResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
@@ -500,7 +500,7 @@ func init() {
 type ManagerMetadata[T core.ManagerOperationResult] struct {
 	BalanceUpdates
 	OperationResult          T                         `json:"operation_result"`
-	InternalOperationResults []InternalOperationResult `tz:"dyn" json:"internal_operation_results"`
+	InternalOperationResults []InternalOperationResult `mv:"dyn" json:"internal_operation_results"`
 }
 
 func (m *ManagerMetadata[T]) GetResult() core.ManagerOperationResult {
@@ -519,8 +519,8 @@ type EventInternalOperationResult struct {
 	Source  core.TransactionDestination      `json:"source"`
 	Nonce   uint16                           `json:"nonce"`
 	Type    expression.Expression            `json:"type"`
-	Tag     tz.Option[Entrypoint]            `json:"tag"`
-	Payload tz.Option[expression.Expression] `json:"payload"`
+	Tag     mv.Option[Entrypoint]            `json:"tag"`
+	Payload mv.Option[expression.Expression] `json:"payload"`
 	Result  ConsumedGasResult                `json:"result"`
 }
 

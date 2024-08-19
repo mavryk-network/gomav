@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -50,7 +50,7 @@ func TestConstants(t *testing.T) {
 		MaxSlashingPeriod:                      2,
 		SmartRollupMaxWrappedProofBinarySize:   30000,
 		SmartRollupMessageSizeLimit:            4096,
-		SmartRollupMaxNumberOfMessagesPerLevel: gotez.BigUint{0xc0, 0x84, 0x3d},
+		SmartRollupMaxNumberOfMessagesPerLevel: gomav.BigUint{0xc0, 0x84, 0x3d},
 		ConsensusRightsDelay:                   3,
 		BlocksPreservationCycles:               1,
 		DelegateParametersActivationDelay:      3,
@@ -58,27 +58,27 @@ func TestConstants(t *testing.T) {
 		BlocksPerCommitment:                    16,
 		NonceRevelationThreshold:               32,
 		CyclesPerVotingPeriod:                  1,
-		HardGasLimitPerOperation:               gotez.BigInt{0x80, 0xfa, 0x7e},
-		HardGasLimitPerBlock:                   gotez.BigInt{0x80, 0xe2, 0xfa, 0x04},
+		HardGasLimitPerOperation:               gomav.BigInt{0x80, 0xfa, 0x7e},
+		HardGasLimitPerBlock:                   gomav.BigInt{0x80, 0xe2, 0xfa, 0x04},
 		ProofOfWorkThreshold:                   -1,
-		MinimalStake:                           gotez.BigUint{0x80, 0xf8, 0x82, 0xad, 0x16},
-		MinimalFrozenStake:                     gotez.BigUint{0x80, 0x8c, 0x8d, 0x9e, 02},
+		MinimalStake:                           gomav.BigUint{0x80, 0xf8, 0x82, 0xad, 0x16},
+		MinimalFrozenStake:                     gomav.BigUint{0x80, 0x8c, 0x8d, 0x9e, 02},
 		VDFDifficulty:                          10000000,
 		OriginationSize:                        257,
 		IssuanceWeights: IssuanceWeights{
-			BaseTotalIssuedPerMinute:       gotez.BigUint{0x84, 0xa5, 0x93, 0x26},
+			BaseTotalIssuedPerMinute:       gomav.BigUint{0x84, 0xa5, 0x93, 0x26},
 			BakingRewardFixedPortionWeight: 5120,
 			BakingRewardBonusWeight:        5120,
 			AttestingRewardWeight:          10240,
 			SeedNonceRevelationTipWeight:   1,
 			VDFRevelationTipWeight:         1,
 		},
-		CostPerByte:                       gotez.BigUint{0xfa, 0x01},
-		HardStorageLimitPerOperation:      gotez.BigInt{0xa0, 0xa9, 0x07},
+		CostPerByte:                       gomav.BigUint{0xfa, 0x01},
+		HardStorageLimitPerOperation:      gomav.BigInt{0xa0, 0xa9, 0x07},
 		QuorumMin:                         2000,
 		QuorumMax:                         7000,
 		MinProposalQuorum:                 500,
-		LiquidityBakingSubsidy:            gotez.BigUint{0xc0, 0x96, 0xb1, 0x02},
+		LiquidityBakingSubsidy:            gomav.BigUint{0xc0, 0x96, 0xb1, 0x02},
 		LiquidityBakingToggleEmaThreshold: 100000,
 		MaxOperationsTimeToLive:           120,
 		MinimalBlockDelay:                 7,
@@ -91,8 +91,8 @@ func TestConstants(t *testing.T) {
 		PercentageOfFrozenDepositsSlashedPerDoubleAttestation: 5000,
 		MaxSlashingPerBlock:          10000,
 		MaxSlashingThreshold:         2334,
-		TestnetDictator:              gotez.None[gotez.PublicKeyHash](),
-		InitialSeed:                  gotez.None[*gotez.Bytes32](),
+		TestnetDictator:              gomav.None[gomav.PublicKeyHash](),
+		InitialSeed:                  gomav.None[*gomav.Bytes32](),
 		CacheScriptSize:              100000000,
 		CacheStakeDistributionCycles: 8,
 		CacheSamplerStateCycles:      8,
@@ -110,7 +110,7 @@ func TestConstants(t *testing.T) {
 		SmartRollupArithPvmEnable:                 true,
 		SmartRollupOriginationSize:                6314,
 		SmartRollupChallengeWindowInBlocks:        40,
-		SmartRollupStakeAmount:                    gotez.BigUint{0x80, 0x90, 0xa1, 0x0f},
+		SmartRollupStakeAmount:                    gomav.BigUint{0x80, 0x90, 0xa1, 0x0f},
 		SmartRollupCommitmentPeriodInBlocks:       20,
 		SmartRollupMaxLookaheadInBlocks:           30000,
 		SmartRollupMaxActiveOutboxLevels:          20160,
@@ -137,35 +137,35 @@ func TestConstants(t *testing.T) {
 		AdaptiveIssuanceLaunchEMAThreshold: 10000000,
 		AdaptiveRewardsParams: AdaptiveRewardsParams{
 			IssuanceRatioFinalMin: core.BigRat{
-				gotez.BigInt{0x01},
-				gotez.BigInt{0x90, 0x06},
+				gomav.BigInt{0x01},
+				gomav.BigInt{0x90, 0x06},
 			},
 			IssuanceRatioFinalMax: core.BigRat{
-				gotez.BigInt{0x01},
-				gotez.BigInt{0x0a},
+				gomav.BigInt{0x01},
+				gomav.BigInt{0x0a},
 			},
 			IssuanceRatioInitialMin: core.BigRat{
-				gotez.BigInt{0x09},
-				gotez.BigInt{0x88, 0x03},
+				gomav.BigInt{0x09},
+				gomav.BigInt{0x88, 0x03},
 			},
 			IssuanceRatioInitialMax: core.BigRat{
-				gotez.BigInt{0x0b},
-				gotez.BigInt{0x88, 0x03},
+				gomav.BigInt{0x0b},
+				gomav.BigInt{0x88, 0x03},
 			},
 			InitialPeriod:    10,
 			TransitionPeriod: 50,
 			MaxBonus:         50000000000000,
 			GrowthRate: core.BigRat{
-				gotez.BigInt{0x01},
-				gotez.BigInt{0xa4, 0x01},
+				gomav.BigInt{0x01},
+				gomav.BigInt{0xa4, 0x01},
 			},
 			CenterDz: core.BigRat{
-				gotez.BigInt{0x01},
-				gotez.BigInt{0x02},
+				gomav.BigInt{0x01},
+				gomav.BigInt{0x02},
 			},
 			RadiusDz: core.BigRat{
-				gotez.BigInt{0x01},
-				gotez.BigInt{0x32},
+				gomav.BigInt{0x01},
+				gomav.BigInt{0x32},
 			},
 		},
 		AdaptiveIssuanceActivationVoteEnable: true,

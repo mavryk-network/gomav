@@ -1,13 +1,13 @@
 package proto_012_Psithaca
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
 )
 
 type BalanceUpdates struct {
-	BalanceUpdates []*BalanceUpdate `tz:"dyn" json:"balance_updates"`
+	BalanceUpdates []*BalanceUpdate `mv:"dyn" json:"balance_updates"`
 }
 
 func (b *BalanceUpdates) GetBalanceUpdates() []core.BalanceUpdate {
@@ -49,7 +49,7 @@ func (BalanceUpdateBlockFees) BalanceUpdateKind() core.BalanceUpdateKind {
 
 //json:category=BalanceUpdateCategory(),kind=BalanceUpdateKind()
 type BalanceUpdateDeposits struct {
-	Delegate tz.PublicKeyHash `json:"delegate"`
+	Delegate mv.PublicKeyHash `json:"delegate"`
 }
 
 func (BalanceUpdateDeposits) BalanceUpdateCategory() string { return "deposits" }
@@ -189,7 +189,7 @@ func (BalanceUpdateMinted) BalanceUpdateKind() core.BalanceUpdateKind {
 
 //json:category=BalanceUpdateCategory(),kind=BalanceUpdateKind()
 type BalanceUpdateLostEndorsingRewards struct {
-	Delegate      tz.PublicKeyHash `json:"delegate"`
+	Delegate      mv.PublicKeyHash `json:"delegate"`
 	Participation bool             `json:"participation"`
 	Revelation    bool             `json:"revelation"`
 }
@@ -203,7 +203,7 @@ func (*BalanceUpdateLostEndorsingRewards) BalanceUpdateKind() core.BalanceUpdate
 
 //json:category=BalanceUpdateCategory(),kind=BalanceUpdateKind()
 type BalanceUpdateCommitments struct {
-	Committer *tz.BlindedPublicKeyHash `json:"committer"`
+	Committer *mv.BlindedPublicKeyHash `json:"committer"`
 }
 
 func (BalanceUpdateCommitments) BalanceUpdateCategory() string { return "commitments" }
@@ -213,7 +213,7 @@ func (BalanceUpdateCommitments) BalanceUpdateKind() core.BalanceUpdateKind {
 
 //json:category=BalanceUpdateCategory(),kind=BalanceUpdateKind()
 type BalanceUpdateLegacyRewards struct {
-	Delegate tz.PublicKeyHash `json:"delegate"`
+	Delegate mv.PublicKeyHash `json:"delegate"`
 	Cycle    int32            `json:"cycle"`
 }
 

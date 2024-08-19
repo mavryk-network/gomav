@@ -14,7 +14,7 @@ func (err ErrBuffer) Error() string {
 }
 
 type Decoder interface {
-	DecodeTZ(data []byte, ctx *Context) (rest []byte, err error)
+	DecodeMV(data []byte, ctx *Context) (rest []byte, err error)
 }
 
 var be = binary.BigEndian
@@ -70,7 +70,7 @@ func decodeInt(data []byte, out reflect.Value, path ErrorPath) (rest []byte, err
 		return data[8:], nil
 
 	default:
-		panic("gotez: unhandled type")
+		panic("gomav: unhandled type")
 	}
 }
 
@@ -143,7 +143,7 @@ func decodeBuiltin(data []byte, out reflect.Value, ctx *Context, path ErrorPath)
 			if !f.IsExported() {
 				continue
 			}
-			fl := parseTag(f.Tag.Get("tz"))
+			fl := parseTag(f.Tag.Get("mv"))
 			if len(fl) != 0 {
 				if _, ok := fl[0].(flOmit); ok {
 					continue
@@ -230,7 +230,7 @@ func decodeValue(data []byte, out reflect.Value, ctx *Context, fl []flag, path E
 			dec = out.Addr().Interface().(Decoder)
 		}
 		if dec != nil {
-			rest, err := dec.DecodeTZ(data, ctx.clone())
+			rest, err := dec.DecodeMV(data, ctx.clone())
 			if err, ok := err.(*Error); ok {
 				return nil, &Error{
 					Path: append(path, err.Path...),
@@ -270,14 +270,14 @@ func decodeValue(data []byte, out reflect.Value, ctx *Context, fl []flag, path E
 
 func Decode(data []byte, v any, opt ...Option) (rest []byte, err error) {
 	if v == nil {
-		return nil, errors.New("gotez: nil interface")
+		return nil, errors.New("gomav: nil interface")
 	}
 	val := reflect.ValueOf(v)
 	if val.Kind() != reflect.Pointer {
-		return nil, fmt.Errorf("gotez: pointer expected: %v", val.Type())
+		return nil, fmt.Errorf("gomav: pointer expected: %v", val.Type())
 	}
 	if val.IsNil() {
-		return nil, errors.New("gotez: nil pointer")
+		return nil, errors.New("gomav: nil pointer")
 	}
 	out := val.Elem()
 	ctx, flags := applyOptions(opt)

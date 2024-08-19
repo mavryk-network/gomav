@@ -1,8 +1,8 @@
 package proto_016_PtMumbai
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
 )
 
 type Constants struct {
@@ -18,29 +18,29 @@ type Constants struct {
 	MichelsonMaximumTypeSize                         uint16                      `json:"michelson_maximum_type_size"`
 	SmartRollupMaxWrappedProofBinarySize             int32                       `json:"smart_rollup_max_wrapped_proof_binary_size"`
 	SmartRollupMessageSizeLimit                      int32                       `json:"smart_rollup_message_size_limit"`
-	SmartRollupMaxNumberOfMessagesPerLevel           tz.BigUint                  `json:"smart_rollup_max_number_of_messages_per_level"`
+	SmartRollupMaxNumberOfMessagesPerLevel           mv.BigUint                  `json:"smart_rollup_max_number_of_messages_per_level"`
 	PreservedCycles                                  uint8                       `json:"preserved_cycles"`
 	BlocksPerCycle                                   int32                       `json:"blocks_per_cycle"`
 	BlocksPerCommitment                              int32                       `json:"blocks_per_commitment"`
 	NonceRevelationThreshold                         int32                       `json:"nonce_revelation_threshold"`
 	BlocksPerStakeSnapshot                           int32                       `json:"blocks_per_stake_snapshot"`
 	CyclesPerVotingPeriod                            int32                       `json:"cycles_per_voting_period"`
-	HardGasLimitPerOperation                         tz.BigInt                   `json:"hard_gas_limit_per_operation"`
-	HardGasLimitPerBlock                             tz.BigInt                   `json:"hard_gas_limit_per_block"`
+	HardGasLimitPerOperation                         mv.BigInt                   `json:"hard_gas_limit_per_operation"`
+	HardGasLimitPerBlock                             mv.BigInt                   `json:"hard_gas_limit_per_block"`
 	ProofOfWorkThreshold                             int64                       `json:"proof_of_work_threshold"`
-	MinimalStake                                     tz.BigUint                  `json:"minimal_stake"`
+	MinimalStake                                     mv.BigUint                  `json:"minimal_stake"`
 	VDFDifficulty                                    int64                       `json:"vdf_difficulty"`
-	SeedNonceRevelationTip                           tz.BigUint                  `json:"seed_nonce_revelation_tip"`
+	SeedNonceRevelationTip                           mv.BigUint                  `json:"seed_nonce_revelation_tip"`
 	OriginationSize                                  int32                       `json:"origination_size"`
-	BakingRewardFixedPortion                         tz.BigUint                  `json:"baking_reward_fixed_portion"`
-	BakingRewardBonusPerSlot                         tz.BigUint                  `json:"baking_reward_bonus_per_slot"`
-	EndorsingRewardPerSlot                           tz.BigUint                  `json:"endorsing_reward_per_slot"`
-	CostPerByte                                      tz.BigUint                  `json:"cost_per_byte"`
-	HardStorageLimitPerOperation                     tz.BigInt                   `json:"hard_storage_limit_per_operation"`
+	BakingRewardFixedPortion                         mv.BigUint                  `json:"baking_reward_fixed_portion"`
+	BakingRewardBonusPerSlot                         mv.BigUint                  `json:"baking_reward_bonus_per_slot"`
+	EndorsingRewardPerSlot                           mv.BigUint                  `json:"endorsing_reward_per_slot"`
+	CostPerByte                                      mv.BigUint                  `json:"cost_per_byte"`
+	HardStorageLimitPerOperation                     mv.BigInt                   `json:"hard_storage_limit_per_operation"`
 	QuorumMin                                        int32                       `json:"quorum_min"`
 	QuorumMax                                        int32                       `json:"quorum_max"`
 	MinProposalQuorum                                int32                       `json:"min_proposal_quorum"`
-	LiquidityBakingSubsidy                           tz.BigUint                  `json:"liquidity_baking_subsidy"`
+	LiquidityBakingSubsidy                           mv.BigUint                  `json:"liquidity_baking_subsidy"`
 	LiquidityBakingToggleEmaThreshold                int32                       `json:"liquidity_baking_toggle_ema_threshold"`
 	MaxOperationsTimeToLive                          int16                       `json:"max_operations_time_to_live"`
 	MinimalBlockDelay                                int64                       `json:"minimal_block_delay"`
@@ -50,10 +50,10 @@ type Constants struct {
 	MinimalParticipationRatio                        core.Rat                    `json:"minimal_participation_ratio"`
 	MaxSlashingPeriod                                int32                       `json:"max_slashing_period"`
 	FrozenDepositsPercentage                         int32                       `json:"frozen_deposits_percentage"`
-	DoubleBakingPunishment                           tz.BigUint                  `json:"double_baking_punishment"`
+	DoubleBakingPunishment                           mv.BigUint                  `json:"double_baking_punishment"`
 	RatioOfFrozenDepositsSlashedPerDoubleEndorsement core.Rat                    `json:"ratio_of_frozen_deposits_slashed_per_double_endorsement"`
-	TestnetDictator                                  tz.Option[tz.PublicKeyHash] `json:"testnet_dictator"`
-	InitialSeed                                      tz.Option[*tz.Bytes32]      `json:"initial_seed"`
+	TestnetDictator                                  mv.Option[mv.PublicKeyHash] `json:"testnet_dictator"`
+	InitialSeed                                      mv.Option[*mv.Bytes32]      `json:"initial_seed"`
 	CacheScriptSize                                  int32                       `json:"cache_script_size"`
 	CacheStakeDistributionCycles                     int8                        `json:"cache_stake_distribution_cycles"`
 	CacheSamplerStateCycles                          int8                        `json:"cache_sampler_state_cycles"`
@@ -62,7 +62,7 @@ type Constants struct {
 	TxRollupHardSizeLimitPerInbox                    int32                       `json:"tx_rollup_hard_size_limit_per_inbox"`
 	TxRollupHardSizeLimitPerMessage                  int32                       `json:"tx_rollup_hard_size_limit_per_message"`
 	TxRollupMaxWithdrawalsPerBatch                   int32                       `json:"tx_rollup_max_withdrawals_per_batch"`
-	TxRollupCommitmentBond                           tz.BigUint                  `json:"tx_rollup_commitment_bond"`
+	TxRollupCommitmentBond                           mv.BigUint                  `json:"tx_rollup_commitment_bond"`
 	TxRollupFinalityPeriod                           int32                       `json:"tx_rollup_finality_period"`
 	TxRollupWithdrawPeriod                           int32                       `json:"tx_rollup_withdraw_period"`
 	TxRollupMaxInboxesCount                          int32                       `json:"tx_rollup_max_inboxes_count"`
@@ -77,7 +77,7 @@ type Constants struct {
 	SmartRollupArithPvmEnable                        bool                        `json:"smart_rollup_arith_pvm_enable"`
 	SmartRollupOriginationSize                       int32                       `json:"smart_rollup_origination_size"`
 	SmartRollupChallengeWindowInBlocks               int32                       `json:"smart_rollup_challenge_window_in_blocks"`
-	SmartRollupStakeAmount                           tz.BigUint                  `json:"smart_rollup_stake_amount"`
+	SmartRollupStakeAmount                           mv.BigUint                  `json:"smart_rollup_stake_amount"`
 	SmartRollupCommitmentPeriodInBlocks              int32                       `json:"smart_rollup_commitment_period_in_blocks"`
 	SmartRollupMaxLookaheadInBlocks                  int32                       `json:"smart_rollup_max_lookahead_in_blocks"`
 	SmartRollupMaxActiveOutboxLevels                 int32                       `json:"smart_rollup_max_active_outbox_levels"`
@@ -117,22 +117,22 @@ func (c *Constants) GetPreservedCycles() uint8               { return c.Preserve
 func (c *Constants) GetBlocksPerCycle() int32                { return c.BlocksPerCycle }
 func (c *Constants) GetBlocksPerCommitment() int32           { return c.BlocksPerCommitment }
 func (c *Constants) GetBlocksPerStakeSnapshot() int32        { return c.BlocksPerStakeSnapshot }
-func (c *Constants) GetHardGasLimitPerOperation() tz.BigInt  { return c.HardGasLimitPerOperation }
-func (c *Constants) GetHardGasLimitPerBlock() tz.BigInt      { return c.HardGasLimitPerBlock }
+func (c *Constants) GetHardGasLimitPerOperation() mv.BigInt  { return c.HardGasLimitPerOperation }
+func (c *Constants) GetHardGasLimitPerBlock() mv.BigInt      { return c.HardGasLimitPerBlock }
 func (c *Constants) GetProofOfWorkThreshold() int64          { return c.ProofOfWorkThreshold }
-func (c *Constants) GetSeedNonceRevelationTip() tz.BigUint   { return c.SeedNonceRevelationTip }
+func (c *Constants) GetSeedNonceRevelationTip() mv.BigUint   { return c.SeedNonceRevelationTip }
 func (c *Constants) GetOriginationSize() int32               { return c.OriginationSize }
-func (c *Constants) GetBakingRewardFixedPortion() tz.BigUint { return c.BakingRewardFixedPortion }
-func (c *Constants) GetBakingRewardBonusPerSlot() tz.BigUint { return c.BakingRewardBonusPerSlot }
-func (c *Constants) GetEndorsingRewardPerSlot() tz.BigUint   { return c.EndorsingRewardPerSlot }
-func (c *Constants) GetCostPerByte() tz.BigUint              { return c.CostPerByte }
-func (c *Constants) GetHardStorageLimitPerOperation() tz.BigInt {
+func (c *Constants) GetBakingRewardFixedPortion() mv.BigUint { return c.BakingRewardFixedPortion }
+func (c *Constants) GetBakingRewardBonusPerSlot() mv.BigUint { return c.BakingRewardBonusPerSlot }
+func (c *Constants) GetEndorsingRewardPerSlot() mv.BigUint   { return c.EndorsingRewardPerSlot }
+func (c *Constants) GetCostPerByte() mv.BigUint              { return c.CostPerByte }
+func (c *Constants) GetHardStorageLimitPerOperation() mv.BigInt {
 	return c.HardStorageLimitPerOperation
 }
 func (c *Constants) GetQuorumMin() int32                     { return c.QuorumMin }
 func (c *Constants) GetQuorumMax() int32                     { return c.QuorumMax }
 func (c *Constants) GetMinProposalQuorum() int32             { return c.MinProposalQuorum }
-func (c *Constants) GetLiquidityBakingSubsidy() tz.BigUint   { return c.LiquidityBakingSubsidy }
+func (c *Constants) GetLiquidityBakingSubsidy() mv.BigUint   { return c.LiquidityBakingSubsidy }
 func (c *Constants) GetMaxOperationsTimeToLive() int16       { return c.MaxOperationsTimeToLive }
 func (c *Constants) GetMinimalBlockDelay() int64             { return c.MinimalBlockDelay }
 func (c *Constants) GetDelayIncrementPerRound() int64        { return c.DelayIncrementPerRound }
@@ -141,7 +141,7 @@ func (c *Constants) GetConsensusThreshold() int32            { return c.Consensu
 func (c *Constants) GetMinimalParticipationRatio() *core.Rat { return &c.MinimalParticipationRatio }
 func (c *Constants) GetMaxSlashingPeriod() int32             { return c.MaxSlashingPeriod }
 func (c *Constants) GetFrozenDepositsPercentage() int32      { return c.FrozenDepositsPercentage }
-func (c *Constants) GetDoubleBakingPunishment() tz.BigUint   { return c.DoubleBakingPunishment }
+func (c *Constants) GetDoubleBakingPunishment() mv.BigUint   { return c.DoubleBakingPunishment }
 func (c *Constants) GetRatioOfFrozenDepositsSlashedPerDoubleEndorsement() *core.Rat {
 	return &c.RatioOfFrozenDepositsSlashedPerDoubleEndorsement
 }

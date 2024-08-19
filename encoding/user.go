@@ -27,7 +27,7 @@ var (
 func (r *TypeRegistry) RegisterType(fn any) {
 	ft := reflect.TypeOf(fn)
 	if ft.Kind() != reflect.Func {
-		panic(fmt.Sprintf("gotez: function expected: %v", ft))
+		panic(fmt.Sprintf("gomav: function expected: %v", ft))
 	}
 	if ft.NumIn() != 2 ||
 		ft.In(0).Kind() != reflect.Slice ||
@@ -37,16 +37,16 @@ func (r *TypeRegistry) RegisterType(fn any) {
 		ft.Out(1).Kind() != reflect.Slice ||
 		ft.Out(1).Elem().Kind() != reflect.Uint8 ||
 		ft.Out(2) != errorType {
-		panic(fmt.Sprintf("gotez: invalid signature: %v", ft))
+		panic(fmt.Sprintf("gomav: invalid signature: %v", ft))
 	}
 	t := ft.Out(0)
 	if t.Kind() != reflect.Interface {
-		panic(fmt.Sprintf("gotez: user type must be an interface: %v", t))
+		panic(fmt.Sprintf("gomav: user type must be an interface: %v", t))
 	}
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	if _, ok := r.types[t]; ok {
-		panic(fmt.Sprintf("gotez: duplicate user type: %v", t))
+		panic(fmt.Sprintf("gomav: duplicate user type: %v", t))
 	}
 	r.types[t] = fn
 }

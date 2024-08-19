@@ -5,13 +5,13 @@ package proto_016_PtMumbai
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_013_PtJakart"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_014_PtKathma"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_015_PtLimaPt"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_013_PtJakart"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_014_PtKathma"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_015_PtLimaPt"
 )
 
 type ManagerOperation = proto_012_Psithaca.ManagerOperation
@@ -101,9 +101,9 @@ func (op *DoubleEndorsementEvidenceContentsAndResult) GetMetadata() any {
 
 type EndorsementMetadata struct {
 	BalanceUpdates
-	Delegate         tz.PublicKeyHash `json:"delegate"`
+	Delegate         mv.PublicKeyHash `json:"delegate"`
 	EndorsementPower int32            `json:"endorsement_power"`
-	ConsensusKey     tz.PublicKeyHash `json:"consensus_key"`
+	ConsensusKey     mv.PublicKeyHash `json:"consensus_key"`
 }
 
 //json:kind=OperationKind()
@@ -119,8 +119,8 @@ func (op *EndorsementContentsAndResult) GetMetadata() any {
 
 //json:kind=OperationKind()
 type DALAttestation struct {
-	Attestor    tz.PublicKeyHash `json:"attestor"`
-	Attestation tz.BigInt        `json:"attestation"`
+	Attestor    mv.PublicKeyHash `json:"attestor"`
+	Attestation mv.BigInt        `json:"attestation"`
 	Level       int32            `json:"level"`
 }
 
@@ -138,20 +138,20 @@ func (op *DALAttestationContentsAndResult) GetMetadata() any {
 }
 
 type DALAttestationMetadata struct {
-	Delegate tz.PublicKeyHash `json:"delegate"`
+	Delegate mv.PublicKeyHash `json:"delegate"`
 }
 
 type RegisterGlobalConstantResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint         `json:"consumed_milligas"`
-	StorageSize      tz.BigInt          `json:"storage_size"`
-	GlobalAddress    *tz.ScriptExprHash `json:"global_address"`
+	ConsumedMilligas mv.BigUint         `json:"consumed_milligas"`
+	StorageSize      mv.BigInt          `json:"storage_size"`
+	GlobalAddress    *mv.ScriptExprHash `json:"global_address"`
 }
 
-func (r *RegisterGlobalConstantResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *RegisterGlobalConstantResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
-func (r *RegisterGlobalConstantResultContents) GetStorageSize() tz.BigInt { return r.StorageSize }
+func (r *RegisterGlobalConstantResultContents) GetStorageSize() mv.BigInt { return r.StorageSize }
 func (r *RegisterGlobalConstantResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
 	return r.StorageSize.Int()
 }
@@ -206,13 +206,13 @@ func (op *TransferTicketContentsAndResult) GetMetadata() any {
 
 type TransferTicketResultContents struct {
 	BalanceUpdates
-	TicketUpdates       []*TicketReceipt `tz:"dyn" json:"ticket_updates"`
-	ConsumedMilligas    tz.BigUint       `json:"consumed_milligas"`
-	PaidStorageSizeDiff tz.BigInt        `json:"paid_storage_size_diff"`
+	TicketUpdates       []*TicketReceipt `mv:"dyn" json:"ticket_updates"`
+	ConsumedMilligas    mv.BigUint       `json:"consumed_milligas"`
+	PaidStorageSizeDiff mv.BigInt        `json:"paid_storage_size_diff"`
 }
 
-func (r *TransferTicketResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
-func (r *TransferTicketResultContents) GetPaidStorageSizeDiff() tz.BigInt {
+func (r *TransferTicketResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
+func (r *TransferTicketResultContents) GetPaidStorageSizeDiff() mv.BigInt {
 	return r.PaidStorageSizeDiff
 }
 func (r *TransferTicketResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
@@ -236,10 +236,10 @@ func init() {
 
 type IncreasePaidStorageResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
 }
 
-func (r *IncreasePaidStorageResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *IncreasePaidStorageResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 
@@ -280,8 +280,8 @@ func (op *IncreasePaidStorageContentsAndResult) GetMetadata() any {
 
 //json:kind=OperationKind()
 type DoubleBakingEvidence struct {
-	Block1 BlockHeader `tz:"dyn" json:"block1"`
-	Block2 BlockHeader `tz:"dyn" json:"block2"`
+	Block1 BlockHeader `mv:"dyn" json:"block1"`
+	Block2 BlockHeader `mv:"dyn" json:"block2"`
 }
 
 func (*DoubleBakingEvidence) OperationKind() string { return "double_baking_evidence" }
@@ -368,8 +368,8 @@ type DALPublishSlotHeader struct {
 type SlotHeader struct {
 	Level           int32             `json:"level"`
 	Index           uint8             `json:"index"`
-	Сommitment      *tz.DALCommitment `json:"commitment"`
-	CommitmentProof *tz.Bytes48       `json:"commitment_proof"`
+	Сommitment      *mv.DALCommitment `json:"commitment"`
+	CommitmentProof *mv.Bytes48       `json:"commitment_proof"`
 }
 
 func (*DALPublishSlotHeader) OperationKind() string { return "dal_publish_slot_header" }
@@ -513,7 +513,7 @@ func init() {
 type ManagerMetadata[T core.ManagerOperationResult] struct {
 	BalanceUpdates
 	OperationResult          T                         `json:"operation_result"`
-	InternalOperationResults []InternalOperationResult `tz:"dyn" json:"internal_operation_results"`
+	InternalOperationResults []InternalOperationResult `mv:"dyn" json:"internal_operation_results"`
 }
 
 func (m *ManagerMetadata[T]) GetResult() core.ManagerOperationResult {

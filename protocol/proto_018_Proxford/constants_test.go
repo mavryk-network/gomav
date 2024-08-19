@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -50,22 +50,22 @@ func TestConstants(t *testing.T) {
 		MaxSlashingPeriod:                      2,
 		SmartRollupMaxWrappedProofBinarySize:   30000,
 		SmartRollupMessageSizeLimit:            4096,
-		SmartRollupMaxNumberOfMessagesPerLevel: tz.BigUint{0xc0, 0x84, 0x3d},
+		SmartRollupMaxNumberOfMessagesPerLevel: mv.BigUint{0xc0, 0x84, 0x3d},
 		PreservedCycles:                        3,
 		BlocksPerCycle:                         8192,
 		BlocksPerCommitment:                    64,
 		NonceRevelationThreshold:               512,
 		BlocksPerStakeSnapshot:                 512,
 		CyclesPerVotingPeriod:                  1,
-		HardGasLimitPerOperation:               tz.BigInt{0x80, 0xfa, 0x7e},
-		HardGasLimitPerBlock:                   tz.BigInt{0x80, 0xb1, 0xbd, 0x02},
+		HardGasLimitPerOperation:               mv.BigInt{0x80, 0xfa, 0x7e},
+		HardGasLimitPerBlock:                   mv.BigInt{0x80, 0xb1, 0xbd, 0x02},
 		ProofOfWorkThreshold:                   -1,
-		MinimalStake:                           tz.BigUint{0x80, 0xf8, 0x82, 0xad, 0x16},
-		MinimalFrozenStake:                     tz.BigUint{0x80, 0x8c, 0x8d, 0x9e, 0x02},
+		MinimalStake:                           mv.BigUint{0x80, 0xf8, 0x82, 0xad, 0x16},
+		MinimalFrozenStake:                     mv.BigUint{0x80, 0x8c, 0x8d, 0x9e, 0x02},
 		VDFDifficulty:                          10000000000,
 		OriginationSize:                        257,
 		IssuanceWeights: IssuanceWeights{
-			BaseTotalIssuedPerMinute:       tz.BigUint{0xc4, 0xbb, 0xc4, 0x28},
+			BaseTotalIssuedPerMinute:       mv.BigUint{0xc4, 0xbb, 0xc4, 0x28},
 			BakingRewardFixedPortionWeight: 5120,
 			BakingRewardBonusWeight:        5120,
 			AttestingRewardWeight:          10240,
@@ -73,8 +73,8 @@ func TestConstants(t *testing.T) {
 			SeedNonceRevelationTipWeight:   1,
 			VDFRevelationTipWeight:         1,
 		},
-		CostPerByte:                       tz.BigUint{0xfa, 0x01},
-		HardStorageLimitPerOperation:      tz.BigInt{0xa0, 0xa9, 0x07},
+		CostPerByte:                       mv.BigUint{0xfa, 0x01},
+		HardStorageLimitPerOperation:      mv.BigInt{0xa0, 0xa9, 0x07},
 		QuorumMin:                         2000,
 		QuorumMax:                         7000,
 		MinProposalQuorum:                 500,
@@ -88,7 +88,7 @@ func TestConstants(t *testing.T) {
 		LimitOfDelegationOverBaking:       9,
 		PercentageOfFrozenDepositsSlashedPerDoubleBaking:      5,
 		PercentageOfFrozenDepositsSlashedPerDoubleAttestation: 50,
-		TestnetDictator:              tz.Some[tz.PublicKeyHash](&tz.Ed25519PublicKeyHash{0x83, 0xd7, 0x2f, 0x98, 0xdc, 0x41, 0xba, 0xa8, 0xb7, 0x11, 0x36, 0xf0, 0x5e, 0x2b, 0xc1, 0xdf, 0xd5, 0x24, 0x86, 0x2f}),
+		TestnetDictator:              mv.Some[mv.PublicKeyHash](&mv.Ed25519PublicKeyHash{0x83, 0xd7, 0x2f, 0x98, 0xdc, 0x41, 0xba, 0xa8, 0xb7, 0x11, 0x36, 0xf0, 0x5e, 0x2b, 0xc1, 0xdf, 0xd5, 0x24, 0x86, 0x2f}),
 		CacheScriptSize:              100000000,
 		CacheStakeDistributionCycles: 8,
 		CacheSamplerStateCycles:      8,
@@ -106,7 +106,7 @@ func TestConstants(t *testing.T) {
 		SmartRollupArithPVMEnable:                 false,
 		SmartRollupOriginationSize:                6314,
 		SmartRollupChallengeWindowInBlocks:        40,
-		SmartRollupStakeAmount:                    tz.BigUint{0x80, 0xc8, 0xaf, 0xa0, 0x25},
+		SmartRollupStakeAmount:                    mv.BigUint{0x80, 0xc8, 0xaf, 0xa0, 0x25},
 		SmartRollupCommitmentPeriodInBlocks:       20,
 		SmartRollupMaxLookaheadInBlocks:           30000,
 		SmartRollupMaxActiveOutboxLevels:          20160,
@@ -132,25 +132,25 @@ func TestConstants(t *testing.T) {
 		AdaptiveIssuanceLaunchEmaThreshold: 100000000,
 		AdaptiveRewardsParams: AdaptiveRewardsParams{
 			IssuanceRatioMin: core.BigRat{
-				tz.BigInt{0x01},
-				tz.BigInt{0x90, 0x1f},
+				mv.BigInt{0x01},
+				mv.BigInt{0x90, 0x1f},
 			},
 			IssuanceRatioMax: core.BigRat{
-				tz.BigInt{0x01},
-				tz.BigInt{0x14},
+				mv.BigInt{0x01},
+				mv.BigInt{0x14},
 			},
 			MaxBonus: 50000000000000,
 			GrowthRate: core.BigRat{
-				tz.BigInt{0x01},
-				tz.BigInt{0xa4, 0x01},
+				mv.BigInt{0x01},
+				mv.BigInt{0xa4, 0x01},
 			},
 			CenterDz: core.BigRat{
-				tz.BigInt{0x01},
-				tz.BigInt{0x02},
+				mv.BigInt{0x01},
+				mv.BigInt{0x02},
 			},
 			RadiusDz: core.BigRat{
-				tz.BigInt{0x01},
-				tz.BigInt{0x32},
+				mv.BigInt{0x01},
+				mv.BigInt{0x32},
 			},
 		},
 		AdaptiveIssuanceActivationVoteEnable: false,

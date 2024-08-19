@@ -6,7 +6,7 @@ type Prefix struct {
 }
 
 // Common prefixes
-// See https://gitlab.com/tezos/tezos/blob/master/src/lib_crypto/base58.ml
+// See https://gitlab.com/mavryk-network/mavryk-protocol/blob/master/src/lib_crypto/base58.ml
 var (
 	// 32
 	BlockHash                     = Prefix{Len: 32, Prefix: []byte{1, 52}}        // B(51)
@@ -21,13 +21,13 @@ var (
 	OperationMetadataListListHash = Prefix{Len: 32, Prefix: []byte{29, 159, 182}} // LLr(53)
 
 	// 20
-	Ed25519PublicKeyHash   = Prefix{Len: 20, Prefix: []byte{6, 161, 159}}   // tz1(36)
-	Secp256k1PublicKeyHash = Prefix{Len: 20, Prefix: []byte{6, 161, 161}}   // tz2(36)
-	P256PublicKeyHash      = Prefix{Len: 20, Prefix: []byte{6, 161, 164}}   // tz3(36)
-	ContractHash           = Prefix{Len: 20, Prefix: []byte{2, 90, 121}}    // KT1(36)
-	BlindedPublicKeyHash   = Prefix{Len: 20, Prefix: []byte{1, 2, 49, 223}} // btz1(37)
-	BLS12_381PublicKeyHash = Prefix{Len: 20, Prefix: []byte{6, 161, 166}}   // tz4(36)
-	//lint:ignore U1000 As defined in Tezos code
+	Ed25519PublicKeyHash   = Prefix{Len: 20, Prefix: []byte{5, 186, 196}} // mv1(36)
+	Secp256k1PublicKeyHash = Prefix{Len: 20, Prefix: []byte{5, 186, 199}} // mv2(36)
+	P256PublicKeyHash      = Prefix{Len: 20, Prefix: []byte{5, 186, 201}} // mv3(36)
+	ContractHash           = Prefix{Len: 20, Prefix: []byte{2, 90, 121}}  // KT1(36)
+	BlindedPublicKeyHash   = Prefix{Len: 20, Prefix: []byte{1, 1, 75, 4}} // bmv1(37)
+	BLS12_381PublicKeyHash = Prefix{Len: 20, Prefix: []byte{5, 186, 204}} // mv4(36)
+	//lint:ignore U1000 As defined in Mavryk code
 	L2Address       = BLS12_381PublicKeyHash
 	TXRollupAddress = Prefix{Len: 20, Prefix: []byte{1, 128, 120, 31}} // txr1(37)
 	ZkRollupHash    = Prefix{Len: 20, Prefix: []byte{1, 23, 224, 125}}

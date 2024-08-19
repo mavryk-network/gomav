@@ -10,8 +10,8 @@ import (
 
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"github.com/ecadlabs/goblst/minpk"
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/b58"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/b58"
 	"github.com/stretchr/testify/require"
 )
 
@@ -57,8 +57,8 @@ func TestKey(t *testing.T) {
 			// generate key
 			priv := c.genKey()
 			// encode to internal roundtrip
-			tzPriv := priv.ToProtocol()
-			tmp, err := NewPrivateKey(tzPriv)
+			mvPriv := priv.ToProtocol()
+			tmp, err := NewPrivateKey(mvPriv)
 			require.NoError(t, err)
 			require.True(t, priv.Equal(tmp))
 			require.Equal(t, priv, tmp)
@@ -69,17 +69,17 @@ func TestKey(t *testing.T) {
 			require.True(t, priv.Equal(tmp2))
 
 			// encode to base58 roundtrip using encrypted type
-			tmp3, err := b58.ParsePrivateKey(tzPriv.ToBase58())
+			tmp3, err := b58.ParsePrivateKey(mvPriv.ToBase58())
 			require.NoError(t, err)
 			decrypted, err := tmp3.Decrypt(nil)
 			require.NoError(t, err)
-			require.Equal(t, tzPriv, decrypted)
+			require.Equal(t, mvPriv, decrypted)
 
 			// get public
 			pub := priv.Public()
 			// encode to internal roundtrip
-			tzPub := pub.ToProtocol()
-			tmp4, err := NewPublicKey(tzPub)
+			mvPub := pub.ToProtocol()
+			tmp4, err := NewPublicKey(mvPub)
 			require.NoError(t, err)
 			require.True(t, pub.Equal(tmp4))
 			require.Equal(t, pub, tmp4)
@@ -92,15 +92,15 @@ func TestKey(t *testing.T) {
 	}
 }
 
-func asGeneric(sig tz.Signature) tz.Signature {
+func asGeneric(sig mv.Signature) mv.Signature {
 	switch sig := sig.(type) {
-	case *tz.Ed25519Signature:
-		return (*tz.GenericSignature)(sig)
-	case *tz.Secp256k1Signature:
-		return (*tz.GenericSignature)(sig)
-	case *tz.P256Signature:
-		return (*tz.GenericSignature)(sig)
-	case *tz.BLSSignature:
+	case *mv.Ed25519Signature:
+		return (*mv.GenericSignature)(sig)
+	case *mv.Secp256k1Signature:
+		return (*mv.GenericSignature)(sig)
+	case *mv.P256Signature:
+		return (*mv.GenericSignature)(sig)
+	case *mv.BLSSignature:
 		return nil
 	default:
 		panic("unknown")

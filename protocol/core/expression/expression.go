@@ -3,8 +3,8 @@ package expression
 import (
 	"encoding/json"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type Expression interface {
@@ -12,19 +12,19 @@ type Expression interface {
 }
 
 type Int struct {
-	Int tz.BigInt `json:"int"`
+	Int mv.BigInt `json:"int"`
 }
 
 func (Int) Expression() {}
 
 type String struct {
-	String string `tz:"dyn" json:"string"`
+	String string `mv:"dyn" json:"string"`
 }
 
 func (String) Expression() {}
 
 type Seq struct {
-	Value []Expression `tz:"dyn"`
+	Value []Expression `mv:"dyn"`
 }
 
 func (s Seq) MarshalJSON() ([]byte, error) {
@@ -45,7 +45,7 @@ func (p Prim00) MarshalJSON() ([]byte, error) {
 
 type Prim0X struct {
 	Prim   Prim   `json:"prim"`
-	Annots string `tz:"dyn" json:"annots"`
+	Annots string `mv:"dyn" json:"annots"`
 }
 
 func (*Prim0X) Expression() {}
@@ -67,7 +67,7 @@ func (p *Prim10) MarshalJSON() ([]byte, error) {
 type Prim1X struct {
 	Prim   Prim
 	Arg    Expression
-	Annots string `tz:"dyn"`
+	Annots string `mv:"dyn"`
 }
 
 func (*Prim1X) Expression() {}
@@ -90,21 +90,21 @@ func (*Prim20) Expression() {}
 type Prim2X struct {
 	Prim   Prim          `json:"prim"`
 	Args   [2]Expression `json:"args"`
-	Annots string        `tz:"dyn" json:"annots,omitempty"`
+	Annots string        `mv:"dyn" json:"annots,omitempty"`
 }
 
 func (*Prim2X) Expression() {}
 
 type PrimXX struct {
 	Prim   Prim         `json:"prim"`
-	Args   []Expression `tz:"dyn" json:"args,omitempty"`
-	Annots string       `tz:"dyn" json:"annots,omitempty"`
+	Args   []Expression `mv:"dyn" json:"args,omitempty"`
+	Annots string       `mv:"dyn" json:"annots,omitempty"`
 }
 
 func (*PrimXX) Expression() {}
 
 type Bytes struct {
-	Bytes tz.Bytes `tz:"dyn" json:"bytes"`
+	Bytes mv.Bytes `mv:"dyn" json:"bytes"`
 }
 
 func (Bytes) Expression() {}

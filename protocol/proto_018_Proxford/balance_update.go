@@ -1,16 +1,16 @@
 package proto_018_Proxford
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_013_PtJakart"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_013_PtJakart"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
 )
 
 type BalanceUpdates struct {
-	BalanceUpdates []*BalanceUpdate `tz:"dyn" json:"balance_updates"`
+	BalanceUpdates []*BalanceUpdate `mv:"dyn" json:"balance_updates"`
 }
 
 func (b *BalanceUpdates) GetBalanceUpdates() []core.BalanceUpdate {
@@ -103,19 +103,19 @@ func init() {
 
 type StakerSingle struct {
 	Contract core.ContractID  `json:"contract"`
-	Delegate tz.PublicKeyHash `json:"delegate"`
+	Delegate mv.PublicKeyHash `json:"delegate"`
 }
 
 func (StakerSingle) StakerKind() string { return "single" }
 
 type StakerShared struct {
-	Delegate tz.PublicKeyHash `json:"delegate"`
+	Delegate mv.PublicKeyHash `json:"delegate"`
 }
 
 func (StakerShared) StakerKind() string { return "shared" }
 
 type StakerBaker struct {
-	Baker tz.PublicKeyHash `json:"baker"`
+	Baker mv.PublicKeyHash `json:"baker"`
 }
 
 func (StakerBaker) StakerKind() string { return "baker" }
@@ -130,7 +130,7 @@ func (StakingDelegatorNumerator) BalanceUpdateKind() core.BalanceUpdateKind {
 }
 
 type StakingDelegateDenominator struct {
-	Delegate tz.PublicKeyHash `json:"delegate"`
+	Delegate mv.PublicKeyHash `json:"delegate"`
 }
 
 func (StakingDelegateDenominator) BalanceUpdateCategory() string {

@@ -1,8 +1,8 @@
 package latest
 
 import (
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	latest "github.com/ecadlabs/gotez/v2/protocol/proto_018_Proxford"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	latest "github.com/mavryk-network/gomav/v2/protocol/proto_018_Proxford"
 )
 
 var (

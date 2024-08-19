@@ -1,14 +1,14 @@
 package proto_013_PtJakart
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
 )
 
 type BalanceUpdates struct {
-	BalanceUpdates []*BalanceUpdate `tz:"dyn" json:"balance_updates"`
+	BalanceUpdates []*BalanceUpdate `mv:"dyn" json:"balance_updates"`
 }
 
 func (b *BalanceUpdates) GetBalanceUpdates() []core.BalanceUpdate {
@@ -53,7 +53,7 @@ type BondID interface {
 }
 
 type TxRollupBondID struct {
-	Address *tz.TXRollupAddress `json:"address"`
+	Address *mv.TXRollupAddress `json:"address"`
 }
 
 func (TxRollupBondID) BondID() {}

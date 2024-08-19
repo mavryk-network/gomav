@@ -1,9 +1,9 @@
 package proto_019_PtParisB
 
 import (
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
 )
 
 type OperationWithOptionalMetadata = core.OperationWithOptionalMetadata[OperationWithOptionalMetadataContents]

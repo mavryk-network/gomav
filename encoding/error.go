@@ -50,7 +50,7 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
-	return fmt.Sprintf("gotez: %v", e.Err)
+	return fmt.Sprintf("gomav: %v", e.Err)
 }
 
 func (e *Error) Unwrap() error {

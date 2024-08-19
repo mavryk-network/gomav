@@ -22,7 +22,7 @@ type testCase struct {
 
 type grabSlice []byte
 
-func (g *grabSlice) DecodeTZ(data []byte, ctx *Context) (rest []byte, err error) {
+func (g *grabSlice) DecodeMV(data []byte, ctx *Context) (rest []byte, err error) {
 	*g = grabSlice(data)
 	return data[len(data):], nil
 }
@@ -32,32 +32,32 @@ func TestEncoding(t *testing.T) {
 		//lint:ignore U1000 test skipping
 		priv uint32
 		X    uint32
-		Omit uint32 `tz:"omit"`
+		Omit uint32 `mv:"omit"`
 		Y    uint64
 	}
 
 	type withDyn struct {
 		X uint32
-		S []byte `tz:"dyn"`
+		S []byte `mv:"dyn"`
 		Y uint32
 	}
 
 	type withOpt struct {
-		X *uint32 `tz:"opt"`
+		X *uint32 `mv:"opt"`
 	}
 
 	type withOptDyn struct {
-		X *uint32 `tz:"opt,dyn"`
+		X *uint32 `mv:"opt,dyn"`
 		Y uint32
 	}
 
 	type withDynOpt struct {
-		X *uint32 `tz:"dyn,opt"`
+		X *uint32 `mv:"dyn,opt"`
 		Y uint32
 	}
 
 	type withCustomDyn struct {
-		X grabSlice `tz:"dyn"`
+		X grabSlice `mv:"dyn"`
 	}
 
 	tests := []testCase{

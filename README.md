@@ -1,15 +1,15 @@
-# gotez
+# gomav
 
-Gotez is a support module focused on Tezos binary protocol.
+Gomav is a support module focused on Mavryk binary protocol.
 
 ## Contents
 
 | Package | Description |
 |---------|-------------|
-| `github.com/ecadlabs/gotez/v2` | Tezos primitives |
-| `github.com/ecadlabs/gotez/v2/b58` | Base58 encoding for Tezos primitives |
-| `github.com/ecadlabs/gotez/v2/client` | Very limited Tezos RPC client library |
-| `github.com/ecadlabs/gotez/v2/crypt` | A wrapper around standard and 3rd party signature algorithms which adds a support of Tezos encodings of keys and signatures |
-| `github.com/ecadlabs/gotez/v2/encoding` | Tezos binary encoding library |
-| `github.com/ecadlabs/gotez/v2/protocol` | Tezos binary protocol library |
-| `github.com/ecadlabs/gotez/v2/teztool` | [Operation injection helper](teztool/README.md) |
+| `github.com/mavryk-network/gomav/v2` | Mavryk primitives |
+| `github.com/mavryk-network/gomav/v2/b58` | Base58 encoding for Mavryk primitives |
+| `github.com/mavryk-network/gomav/v2/client` | Very limited Mavryk RPC client library |
+| `github.com/mavryk-network/gomav/v2/crypt` | A wrapper around standard and 3rd party signature algorithms which adds a support of Mavryk encodings of keys and signatures |
+| `github.com/mavryk-network/gomav/v2/encoding` | Mavryk binary encoding library |
+| `github.com/mavryk-network/gomav/v2/protocol` | Mavryk binary protocol library |
+| `github.com/mavryk-network/gomav/v2/mavtool` | [Operation injection helper](mavtool/README.md) |

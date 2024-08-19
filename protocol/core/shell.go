@@ -1,19 +1,19 @@
 package core
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type ShellHeader struct {
 	Level          int32              `json:"level"`
 	Proto          uint8              `json:"proto"`
-	Predecessor    *tz.BlockHash      `json:"predecessor"`
-	Timestamp      tz.Timestamp       `json:"timestamp"`
+	Predecessor    *mv.BlockHash      `json:"predecessor"`
+	Timestamp      mv.Timestamp       `json:"timestamp"`
 	ValidationPass uint8              `json:"validation_pass"`
-	OperationsHash *tz.OperationsHash `json:"operations_hash"`
-	Fitness        tz.Bytes           `tz:"dyn" json:"fitness"`
-	Context        *tz.ContextHash    `json:"context"`
+	OperationsHash *mv.OperationsHash `json:"operations_hash"`
+	Fitness        mv.Bytes           `mv:"dyn" json:"fitness"`
+	Context        *mv.ContextHash    `json:"context"`
 }
 
 type BlockMetadataHeader struct {
@@ -21,7 +21,7 @@ type BlockMetadataHeader struct {
 	MaxOperationsTTL       int32                     `json:"max_operations_ttl"`
 	MaxOperationDataLength int32                     `json:"max_operation_data_length"`
 	MaxBlockHeaderLength   int32                     `json:"max_block_header_length"`
-	MaxOperationListLength []*MaxOperationListLength `tz:"dyn,dyn" json:"max_operation_list_length"`
+	MaxOperationListLength []*MaxOperationListLength `mv:"dyn,dyn" json:"max_operation_list_length"`
 }
 
 func (*BlockMetadataHeader) BlockMetadataContents() {}
@@ -40,7 +40,7 @@ func (t TestChainStatusNotRunning) MarshalText() (text []byte, err error) {
 
 //json:status=TestChainStatus()
 type TestChainStatusForking struct {
-	Protocol   *tz.ProtocolHash `json:"protocol"`
+	Protocol   *mv.ProtocolHash `json:"protocol"`
 	Expiration int64            `json:"expiration"`
 }
 
@@ -48,9 +48,9 @@ func (TestChainStatusForking) TestChainStatus() string { return "forking" }
 
 //json:status=TestChainStatus()
 type TestChainStatusRunning struct {
-	ChainID    *tz.ChainID      `json:"chain_id,omitempty"`
-	Genesis    *tz.BlockHash    `json:"genesis,omitempty"`
-	Protocol   *tz.ProtocolHash `json:"protocol"`
+	ChainID    *mv.ChainID      `json:"chain_id,omitempty"`
+	Genesis    *mv.BlockHash    `json:"genesis,omitempty"`
+	Protocol   *mv.ProtocolHash `json:"protocol"`
 	Expiration int64            `json:"expiration"`
 }
 
@@ -68,5 +68,5 @@ func init() {
 
 type MaxOperationListLength struct {
 	MaxSize int32            `json:"max_size"`
-	MaxOp   tz.Option[int32] `json:"max_op"`
+	MaxOp   mv.Option[int32] `json:"max_op"`
 }

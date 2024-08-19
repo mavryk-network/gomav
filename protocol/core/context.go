@@ -1,30 +1,30 @@
 package core
 
-import tz "github.com/ecadlabs/gotez/v2"
+import mv "github.com/mavryk-network/gomav/v2"
 
 type DelegatesList struct {
-	Delegates []tz.PublicKeyHash `tz:"dyn" json:"delegates"`
+	Delegates []mv.PublicKeyHash `mv:"dyn" json:"delegates"`
 }
 
 type PendingConsensusKey interface {
 	GetCycle() int32
-	GetPKH() tz.PublicKeyHash
+	GetPKH() mv.PublicKeyHash
 }
 
 type DelegateInfo interface {
-	GetFullBalance() tz.BigUint
-	GetCurrentFrozenDeposits() tz.BigUint
-	GetFrozenDeposits() tz.BigUint
-	GetStakingBalance() tz.BigUint
-	GetFrozenDepositsLimit() tz.Option[tz.BigUint]
+	GetFullBalance() mv.BigUint
+	GetCurrentFrozenDeposits() mv.BigUint
+	GetFrozenDeposits() mv.BigUint
+	GetStakingBalance() mv.BigUint
+	GetFrozenDepositsLimit() mv.Option[mv.BigUint]
 	GetDelegatedContracts() []ContractID
-	GetDelegatedBalance() tz.BigUint
+	GetDelegatedBalance() mv.BigUint
 	GetDeactivated() bool
 	GetGracePeriod() int32
-	GetVotingPower() tz.Option[int64]
-	GetCurrentBallot() tz.Option[BallotKind]
-	GetCurrentProposals() tz.Option[[]*tz.ProtocolHash]
-	GetRemainingProposals() tz.Option[int32]
-	GetActiveConsensusKey() tz.Option[tz.PublicKeyHash]
-	GetPendingConsensusKeys() tz.Option[[]PendingConsensusKey]
+	GetVotingPower() mv.Option[int64]
+	GetCurrentBallot() mv.Option[BallotKind]
+	GetCurrentProposals() mv.Option[[]*mv.ProtocolHash]
+	GetRemainingProposals() mv.Option[int32]
+	GetActiveConsensusKey() mv.Option[mv.PublicKeyHash]
+	GetPendingConsensusKeys() mv.Option[[]PendingConsensusKey]
 }

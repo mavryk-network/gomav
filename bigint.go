@@ -1,11 +1,11 @@
-package gotez
+package gomav
 
 import (
 	"errors"
 	"fmt"
 	"math/big"
 
-	"github.com/ecadlabs/gotez/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type BigInt []byte
@@ -115,7 +115,7 @@ func ParseBigInt(str string, base int) (BigInt, error) {
 	return NewBigInt(v), nil
 }
 
-func (b *BigInt) DecodeTZ(data []byte, ctx *encoding.Context) (rest []byte, err error) {
+func (b *BigInt) DecodeMV(data []byte, ctx *encoding.Context) (rest []byte, err error) {
 	ln, err := getLen(data)
 	if err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ func ParseBigUint(str string, base int) (BigUint, error) {
 	return NewBigUint(v)
 }
 
-func (b *BigUint) DecodeTZ(data []byte, ctx *encoding.Context) (rest []byte, err error) {
+func (b *BigUint) DecodeMV(data []byte, ctx *encoding.Context) (rest []byte, err error) {
 	ln, err := getLen(data)
 	if err != nil {
 		return nil, err

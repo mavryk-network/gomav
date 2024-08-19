@@ -3,12 +3,12 @@ package proto_019_PtParisB
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_017_PtNairob"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_018_Proxford"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_017_PtNairob"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_018_Proxford"
 )
 
 type SmartRollupAddMessages = proto_016_PtMumbai.SmartRollupAddMessages
@@ -24,13 +24,13 @@ type GameStatus = proto_016_PtMumbai.GameStatus
 
 type SmartRollupOriginateResultContents struct {
 	BalanceUpdates
-	Address               *tz.SmartRollupAddress        `json:"address"`
-	GenesisCommitmentHash *tz.SmartRollupCommitmentHash `json:"genesis_commitment_hash"`
-	ConsumedMilligas      tz.BigUint                    `json:"consumed_milligas"`
-	Size                  tz.BigInt                     `json:"size"`
+	Address               *mv.SmartRollupAddress        `json:"address"`
+	GenesisCommitmentHash *mv.SmartRollupCommitmentHash `json:"genesis_commitment_hash"`
+	ConsumedMilligas      mv.BigUint                    `json:"consumed_milligas"`
+	Size                  mv.BigInt                     `json:"size"`
 }
 
-func (r *SmartRollupOriginateResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *SmartRollupOriginateResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 func (r *SmartRollupOriginateResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
@@ -86,13 +86,13 @@ func (op *SmartRollupCementContentsAndResult) GetMetadata() any {
 }
 
 type SmartRollupPublishResultContents struct {
-	ConsumedMilligas tz.BigUint                    `json:"consumed_milligas"`
-	StakedHash       *tz.SmartRollupCommitmentHash `json:"staked_hash"`
+	ConsumedMilligas mv.BigUint                    `json:"consumed_milligas"`
+	StakedHash       *mv.SmartRollupCommitmentHash `json:"staked_hash"`
 	PublishedAtLevel int32                         `json:"published_at_level"`
 	BalanceUpdates
 }
 
-func (r *SmartRollupPublishResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *SmartRollupPublishResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 
@@ -123,12 +123,12 @@ func (op *SmartRollupPublishContentsAndResult) GetMetadata() any {
 }
 
 type SmartRollupTimeoutResultContents struct {
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
 	GameStatus       GameStatus `json:"game_status"`
 	BalanceUpdates
 }
 
-func (r *SmartRollupTimeoutResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *SmartRollupTimeoutResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 
@@ -171,16 +171,16 @@ func (op *SmartRollupRefuteContentsAndResult) GetMetadata() any {
 
 type SmartRollupExecuteOutboxMessageResultContents struct {
 	BalanceUpdates
-	TicketUpdates       []*TicketReceipt `tz:"dyn" json:"ticket_updates"`
-	ConsumedMilligas    tz.BigUint       `json:"consumed_milligas"`
-	PaidStorageSizeDiff tz.BigInt        `json:"paid_storage_size_diff"`
+	TicketUpdates       []*TicketReceipt `mv:"dyn" json:"ticket_updates"`
+	ConsumedMilligas    mv.BigUint       `json:"consumed_milligas"`
+	PaidStorageSizeDiff mv.BigInt        `json:"paid_storage_size_diff"`
 }
 
-func (r *SmartRollupExecuteOutboxMessageResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *SmartRollupExecuteOutboxMessageResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 
-func (r *SmartRollupExecuteOutboxMessageResultContents) GetPaidStorageSizeDiff() tz.BigInt {
+func (r *SmartRollupExecuteOutboxMessageResultContents) GetPaidStorageSizeDiff() mv.BigInt {
 	return r.PaidStorageSizeDiff
 }
 
@@ -216,10 +216,10 @@ func (op *SmartRollupExecuteOutboxMessageContentsAndResult) GetMetadata() any {
 
 type SmartRollupRecoverBondResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
 }
 
-func (r *SmartRollupRecoverBondResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *SmartRollupRecoverBondResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 

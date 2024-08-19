@@ -3,7 +3,7 @@ package core
 import (
 	"strconv"
 
-	tz "github.com/ecadlabs/gotez/v2"
+	mv "github.com/mavryk-network/gomav/v2"
 )
 
 type LiquidityBakingToggleVote int8
@@ -68,24 +68,24 @@ func (k VotingPeriodKind) String() string {
 type BlockMetadata interface {
 	WithBalanceUpdates
 	GetMetadataHeader() *BlockMetadataHeader
-	GetProposer() tz.PublicKeyHash
-	GetBaker() tz.PublicKeyHash
+	GetProposer() mv.PublicKeyHash
+	GetBaker() mv.PublicKeyHash
 	GetLevelInfo() *LevelInfo
 	GetVotingPeriodInfo() *VotingPeriodInfo
-	GetNonceHash() tz.Option[*tz.CycleNonceHash]
-	GetConsumedGas() tz.Option[tz.BigUint]
-	GetConsumedMilligas() tz.Option[tz.BigUint]
-	GetDeactivated() []tz.PublicKeyHash
+	GetNonceHash() mv.Option[*mv.CycleNonceHash]
+	GetConsumedGas() mv.Option[mv.BigUint]
+	GetConsumedMilligas() mv.Option[mv.BigUint]
+	GetDeactivated() []mv.PublicKeyHash
 	GetImplicitOperationsResults() []SuccessfulManagerOperationResult
-	GetProposerConsensusKey() tz.Option[tz.PublicKeyHash]
-	GetBakerConsensusKey() tz.Option[tz.PublicKeyHash]
+	GetProposerConsensusKey() mv.Option[mv.PublicKeyHash]
+	GetBakerConsensusKey() mv.Option[mv.PublicKeyHash]
 }
 
 type BlockHeader interface {
 	Signed
 	GetShellHeader() *ShellHeader
-	GetPayloadHash() *tz.BlockPayloadHash
+	GetPayloadHash() *mv.BlockPayloadHash
 	GetPayloadRound() int32
-	GetProofOfWorkNonce() *tz.Bytes8
-	GetSeedNonceHash() tz.Option[*tz.CycleNonceHash]
+	GetProofOfWorkNonce() *mv.Bytes8
+	GetSeedNonceHash() mv.Option[*mv.CycleNonceHash]
 }

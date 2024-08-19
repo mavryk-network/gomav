@@ -60,14 +60,14 @@ func Test_DecodeCheck_FailsMin4Bytes(t *testing.T) {
 	input := "ABCD"
 	_, err := DecodeCheck([]byte(input))
 	require.NotNil(t, err)
-	assert.Equal(t, "gotez: base58Check decoding error: data is too short: 3", err.Error())
+	assert.Equal(t, "gomav: base58Check decoding error: data is too short: 3", err.Error())
 }
 
 func Test_DecodeCheck_FailsInvalidChecksum(t *testing.T) {
 	input := "ABCDE"
 	_, err := DecodeCheck([]byte(input))
 	require.NotNil(t, err)
-	assert.Equal(t, "gotez: base58Check decoding error: invalid checksum", err.Error())
+	assert.Equal(t, "gomav: base58Check decoding error: invalid checksum", err.Error())
 }
 
 func Test_DecodeCheck_FailsInvalidChar(t *testing.T) {

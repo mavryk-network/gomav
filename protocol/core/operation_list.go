@@ -1,24 +1,24 @@
 package core
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
 )
 
 type GroupContents interface {
-	GetSignature() (tz.Option[tz.Signature], error)
+	GetSignature() (mv.Option[mv.Signature], error)
 	GroupContents()
 	Operations() []OperationContents
 }
 
 type OperationWithOptionalMetadataContents interface {
-	GetSignature() (tz.Option[tz.Signature], error)
+	GetSignature() (mv.Option[mv.Signature], error)
 	OperationWithOptionalMetadataContents()
 	Operations() []OperationContents
 }
 
 type OperationsList[T GroupContents] struct {
-	Operations []*OperationsGroupImpl[T] `tz:"dyn,dyn" json:"operations"` // yes, twice
+	Operations []*OperationsGroupImpl[T] `mv:"dyn,dyn" json:"operations"` // yes, twice
 }
 
 func (l *OperationsList[T]) GetGroups() []OperationsGroup {
@@ -30,35 +30,35 @@ func (l *OperationsList[T]) GetGroups() []OperationsGroup {
 }
 
 type OperationsGroup interface {
-	GetChainID() *tz.ChainID
-	GetHash() *tz.OperationHash
-	GetBranch() *tz.BlockHash
+	GetChainID() *mv.ChainID
+	GetHash() *mv.OperationHash
+	GetBranch() *mv.BlockHash
 	GetContents() GroupContents
 }
 
 type OperationsGroupImpl[T GroupContents] struct {
-	ChainID  *tz.ChainID       `json:"chain_id"`
-	Hash     *tz.OperationHash `json:"hash"`
-	Branch   *tz.BlockHash     `tz:"dyn" json:"branch"`
-	Contents T                 `tz:"dyn" json:"contents"`
+	ChainID  *mv.ChainID       `json:"chain_id"`
+	Hash     *mv.OperationHash `json:"hash"`
+	Branch   *mv.BlockHash     `mv:"dyn" json:"branch"`
+	Contents T                 `mv:"dyn" json:"contents"`
 }
 
-func (g *OperationsGroupImpl[T]) GetChainID() *tz.ChainID    { return g.ChainID }
-func (g *OperationsGroupImpl[T]) GetHash() *tz.OperationHash { return g.Hash }
-func (g *OperationsGroupImpl[T]) GetBranch() *tz.BlockHash   { return g.Branch }
+func (g *OperationsGroupImpl[T]) GetChainID() *mv.ChainID    { return g.ChainID }
+func (g *OperationsGroupImpl[T]) GetHash() *mv.OperationHash { return g.Hash }
+func (g *OperationsGroupImpl[T]) GetBranch() *mv.BlockHash   { return g.Branch }
 func (g *OperationsGroupImpl[T]) GetContents() GroupContents { return g.Contents }
 
 type OperationWithoutMetadata[T OperationContents] struct {
 	Contents  []T                  `json:"contents"`
-	Signature *tz.GenericSignature `json:"signature"`
+	Signature *mv.GenericSignature `json:"signature"`
 }
 
-func (op *OperationWithoutMetadata[T]) DecodeTZ(data []byte, ctx *encoding.Context) (rest []byte, err error) {
-	if len(data) < tz.GenericSignatureBytesLen {
+func (op *OperationWithoutMetadata[T]) DecodeMV(data []byte, ctx *encoding.Context) (rest []byte, err error) {
+	if len(data) < mv.GenericSignatureBytesLen {
 		return nil, encoding.ErrBuffer(len(data))
 	}
-	tmp := data[:len(data)-tz.GenericSignatureBytesLen]
-	data = data[len(data)-tz.GenericSignatureBytesLen:]
+	tmp := data[:len(data)-mv.GenericSignatureBytesLen]
+	data = data[len(data)-mv.GenericSignatureBytesLen:]
 	if _, err := encoding.Decode(tmp, &op.Contents, encoding.Ctx(ctx)); err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (ops OperationWithOptionalMetadata[T]) Operations() []OperationContents {
 	return ops.Contents.Operations()
 }
 
-func (op OperationWithOptionalMetadata[T]) GetSignature() (tz.Option[tz.Signature], error) {
+func (op OperationWithOptionalMetadata[T]) GetSignature() (mv.Option[mv.Signature], error) {
 	return op.Contents.GetSignature()
 }
 

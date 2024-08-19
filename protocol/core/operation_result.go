@@ -3,7 +3,7 @@ package core
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
+	mv "github.com/mavryk-network/gomav/v2"
 )
 
 type InternalOperationResult interface {
@@ -40,7 +40,7 @@ var _ ManagerOperationResultAppliedOrBacktracked = (*OperationResultApplied[stru
 
 //json:status=Status()
 type OperationResultBacktracked[T any] struct {
-	Errors   tz.Option[OperationResultErrors] `json:"errors"`
+	Errors   mv.Option[OperationResultErrors] `json:"errors"`
 	Contents T                                `json:"contents"`
 }
 
@@ -51,7 +51,7 @@ func (r *OperationResultBacktracked[T]) GetResultContents() any { return r.Conte
 var _ ManagerOperationResultAppliedOrBacktracked = (*OperationResultBacktracked[struct{}])(nil)
 
 type OperationResultErrors struct {
-	Errors []Bytes `tz:"dyn" json:"errors"`
+	Errors []Bytes `mv:"dyn" json:"errors"`
 }
 
 //json:status=Status()
@@ -67,17 +67,17 @@ func (*OperationResultSkipped) Status() string  { return "skipped" }
 func (*OperationResultSkipped) IsApplied() bool { return false }
 
 type ResultWithConsumedMilligas interface {
-	GetConsumedMilligas() tz.BigUint
+	GetConsumedMilligas() mv.BigUint
 }
 
 type ResultWithStorageSize interface {
 	StorageSizeEstimator
-	GetStorageSize() tz.BigInt
+	GetStorageSize() mv.BigInt
 }
 
 type ResultWithPaidStorageSizeDiff interface {
 	StorageSizeEstimator
-	GetPaidStorageSizeDiff() tz.BigInt
+	GetPaidStorageSizeDiff() mv.BigInt
 }
 
 type StorageSizeEstimator interface {

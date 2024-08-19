@@ -1,10 +1,10 @@
-package gotez
+package gomav
 
 import (
 	"math/big"
 	"testing"
 
-	"github.com/ecadlabs/gotez/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/encoding"
 	"github.com/stretchr/testify/require"
 )
 

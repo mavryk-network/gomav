@@ -5,11 +5,11 @@ package proto_013_PtJakart
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/core/expression"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_012_Psithaca"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/core/expression"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
 )
 
 type ManagerOperation = proto_012_Psithaca.ManagerOperation
@@ -36,17 +36,17 @@ type DelegationSuccessfulManagerResult = proto_012_Psithaca.DelegationSuccessful
 type SetDepositsLimitSuccessfulManagerResult = proto_012_Psithaca.SetDepositsLimitSuccessfulManagerResult
 
 type DoubleBakingEvidence struct {
-	Block1 BlockHeader `tz:"dyn" json:"block1"`
-	Block2 BlockHeader `tz:"dyn" json:"block2"`
+	Block1 BlockHeader `mv:"dyn" json:"block1"`
+	Block2 BlockHeader `mv:"dyn" json:"block2"`
 }
 
 func (*DoubleBakingEvidence) OperationKind() string { return "double_baking_evidence" }
 
 type Ticket struct {
-	Contents expression.Expression `tz:"dyn" json:"contents"`
-	Type     expression.Expression `tz:"dyn" json:"type"`
+	Contents expression.Expression `mv:"dyn" json:"contents"`
+	Type     expression.Expression `mv:"dyn" json:"type"`
 	Ticketer core.ContractID       `json:"ticketer"`
-	Amount   tz.BigUint            `json:"amount"`
+	Amount   mv.BigUint            `json:"amount"`
 }
 
 //json:kind=OperationKind()
@@ -54,7 +54,7 @@ type TransferTicket struct {
 	ManagerOperation
 	Ticket      Ticket          `json:"ticket"`
 	Destination core.ContractID `json:"destination"`
-	Entrypoint  string          `tz:"dyn" json:"entrypoint"`
+	Entrypoint  string          `mv:"dyn" json:"entrypoint"`
 }
 
 func (*TransferTicket) OperationKind() string { return "transfer_ticket" }
@@ -116,7 +116,7 @@ func (op *DoublePreendorsementEvidenceContentsAndResult) GetMetadata() any {
 
 type EndorsementMetadata struct {
 	BalanceUpdates
-	Delegate         tz.PublicKeyHash `json:"delegate"`
+	Delegate         mv.PublicKeyHash `json:"delegate"`
 	EndorsementPower int32            ` json:"endorsement_power"`
 }
 
@@ -168,17 +168,17 @@ func (op *DelegationContentsAndResult) GetMetadata() any {
 
 type RegisterGlobalConstantResultContents struct {
 	BalanceUpdates
-	ConsumedGas      tz.BigUint         `json:"consumed_gas"`
-	ConsumedMilligas tz.BigUint         `json:"consumed_milligas"`
-	StorageSize      tz.BigInt          `json:"storage_size"`
-	GlobalAddress    *tz.ScriptExprHash `json:"global_address"`
+	ConsumedGas      mv.BigUint         `json:"consumed_gas"`
+	ConsumedMilligas mv.BigUint         `json:"consumed_milligas"`
+	StorageSize      mv.BigInt          `json:"storage_size"`
+	GlobalAddress    *mv.ScriptExprHash `json:"global_address"`
 }
 
-func (r *RegisterGlobalConstantResultContents) GetConsumedMilligas() tz.BigUint {
+func (r *RegisterGlobalConstantResultContents) GetConsumedMilligas() mv.BigUint {
 	return r.ConsumedMilligas
 }
 
-func (r *RegisterGlobalConstantResultContents) GetStorageSize() tz.BigInt { return r.StorageSize }
+func (r *RegisterGlobalConstantResultContents) GetStorageSize() mv.BigInt { return r.StorageSize }
 func (r *RegisterGlobalConstantResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
 	return r.StorageSize.Int()
 }
@@ -233,13 +233,13 @@ func (op *TransferTicketContentsAndResult) GetMetadata() any {
 
 type TransferTicketResultContents struct {
 	BalanceUpdates
-	ConsumedGas         tz.BigUint `json:"consumed_gas"`
-	ConsumedMilligas    tz.BigUint `json:"consumed_milligas"`
-	PaidStorageSizeDiff tz.BigInt  `json:"paid_storage_size_diff"`
+	ConsumedGas         mv.BigUint `json:"consumed_gas"`
+	ConsumedMilligas    mv.BigUint `json:"consumed_milligas"`
+	PaidStorageSizeDiff mv.BigInt  `json:"paid_storage_size_diff"`
 }
 
-func (r *TransferTicketResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
-func (r *TransferTicketResultContents) GetPaidStorageSizeDiff() tz.BigInt {
+func (r *TransferTicketResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
+func (r *TransferTicketResultContents) GetPaidStorageSizeDiff() mv.BigInt {
 	return r.PaidStorageSizeDiff
 }
 func (r *TransferTicketResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
@@ -333,7 +333,7 @@ func init() {
 type ManagerMetadata[T core.ManagerOperationResult] struct {
 	BalanceUpdates
 	OperationResult          T                         `json:"operation_result"`
-	InternalOperationResults []InternalOperationResult `tz:"dyn" json:"internal_operation_results"`
+	InternalOperationResults []InternalOperationResult `mv:"dyn" json:"internal_operation_results"`
 }
 
 func (m *ManagerMetadata[T]) GetResult() core.ManagerOperationResult {
@@ -351,7 +351,7 @@ func (m *ManagerMetadata[T]) GetInternalOperationResults() []core.InternalOperat
 type DelegationInternalOperationResult struct {
 	Source   core.TransactionDestination `json:"source"`
 	Nonce    uint16                      `json:"nonce"`
-	Delegate tz.Option[tz.PublicKeyHash] `json:"delegate"`
+	Delegate mv.Option[mv.PublicKeyHash] `json:"delegate"`
 	Result   ConsumedGasResult           `json:"result"`
 }
 

@@ -1,7 +1,7 @@
 package proto_017_PtNairob
 
 import (
-	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
 )
 
 type UnsignedOperation = proto_016_PtMumbai.UnsignedOperation

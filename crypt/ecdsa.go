@@ -9,7 +9,7 @@ import (
 	"math/big"
 
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
-	tz "github.com/ecadlabs/gotez/v2"
+	mv "github.com/mavryk-network/gomav/v2"
 )
 
 type ECDSAPrivateKey ecdsa.PrivateKey
@@ -40,16 +40,16 @@ func (priv *ECDSAPrivateKey) Sign(message []byte) (signature Signature, err erro
 	return canonizeSignature(sig), nil
 }
 
-func (priv *ECDSAPrivateKey) ToProtocol() tz.PrivateKey {
+func (priv *ECDSAPrivateKey) ToProtocol() mv.PrivateKey {
 	switch priv.Curve {
 	case elliptic.P256():
-		out, err := tz.NewP256PrivateKey(priv.D)
+		out, err := mv.NewP256PrivateKey(priv.D)
 		if err != nil {
 			panic(err)
 		}
 		return out
 	case secp256k1.S256():
-		out, err := tz.NewSecp256k1PrivateKey(priv.D)
+		out, err := mv.NewSecp256k1PrivateKey(priv.D)
 		if err != nil {
 			panic(err)
 		}
@@ -92,7 +92,7 @@ func (pub *ECDSAPublicKey) VerifySignature(sig Signature, message []byte) bool {
 	case *ECDSASignature:
 		return ecdsa.Verify((*ecdsa.PublicKey)(pub), digest[:], sig.R, sig.S)
 	case *GenericSignature:
-		s, err := NewSignature((*tz.Secp256k1Signature)(sig)) // exact curve doesn't matter here
+		s, err := NewSignature((*mv.Secp256k1Signature)(sig)) // exact curve doesn't matter here
 		if err != nil {
 			return false
 		}
@@ -102,16 +102,16 @@ func (pub *ECDSAPublicKey) VerifySignature(sig Signature, message []byte) bool {
 	}
 }
 
-func (pub *ECDSAPublicKey) ToProtocol() tz.PublicKey {
+func (pub *ECDSAPublicKey) ToProtocol() mv.PublicKey {
 	switch pub.Curve {
 	case elliptic.P256():
-		out, err := tz.NewP256PublicKey(elliptic.MarshalCompressed(pub.Curve, pub.X, pub.Y))
+		out, err := mv.NewP256PublicKey(elliptic.MarshalCompressed(pub.Curve, pub.X, pub.Y))
 		if err != nil {
 			panic(err)
 		}
 		return out
 	case secp256k1.S256():
-		out, err := tz.NewSecp256k1PublicKey(elliptic.MarshalCompressed(pub.Curve, pub.X, pub.Y))
+		out, err := mv.NewSecp256k1PublicKey(elliptic.MarshalCompressed(pub.Curve, pub.X, pub.Y))
 		if err != nil {
 			panic(err)
 		}
@@ -152,13 +152,13 @@ func (sig *ECDSASignature) Verify(pub PublicKey, message []byte) bool {
 	return pub.VerifySignature(sig, message)
 }
 
-func (sig *ECDSASignature) ToProtocol() tz.Signature {
-	var s tz.Signature
+func (sig *ECDSASignature) ToProtocol() mv.Signature {
+	var s mv.Signature
 	switch sig.Curve {
 	case secp256k1.S256():
-		s = tz.NewSecp256k1Signature(sig.R, sig.S)
+		s = mv.NewSecp256k1Signature(sig.R, sig.S)
 	case elliptic.P256():
-		s = tz.NewP256Signature(sig.R, sig.S)
+		s = mv.NewP256Signature(sig.R, sig.S)
 	default:
 		panic(fmt.Sprintf("crypt: unknown curve %v", sig.Curve.Params()))
 	}

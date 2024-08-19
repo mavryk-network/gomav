@@ -1,9 +1,9 @@
 package proto_012_Psithaca
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
 )
 
 type GroupContents interface {
@@ -24,8 +24,8 @@ type OperationWithoutMetadata[T core.OperationContents] struct {
 	core.OperationWithoutMetadata[T]
 }
 
-func (op *OperationWithoutMetadata[T]) GetSignature() (tz.Option[tz.Signature], error) {
-	return tz.Some[tz.Signature](op.Signature), nil
+func (op *OperationWithoutMetadata[T]) GetSignature() (mv.Option[mv.Signature], error) {
+	return mv.Some[mv.Signature](op.Signature), nil
 }
 
 type OperationWithTooLargeMetadata[T core.OperationContents] struct {
@@ -46,8 +46,8 @@ func init() {
 }
 
 type OperationWithOptionalMetadataWithMetadata[T core.OperationContentsAndResult] struct {
-	Contents  []T                             `tz:"dyn" json:"contents"`
-	Signature tz.Option[*tz.GenericSignature] `json:"signature"`
+	Contents  []T                             `mv:"dyn" json:"contents"`
+	Signature mv.Option[*mv.GenericSignature] `json:"signature"`
 }
 
 func (ops *OperationWithOptionalMetadataWithMetadata[T]) Operations() []core.OperationContents {
@@ -59,16 +59,16 @@ func (ops *OperationWithOptionalMetadataWithMetadata[T]) Operations() []core.Ope
 }
 
 func (*OperationWithOptionalMetadataWithMetadata[T]) OperationWithOptionalMetadataContents() {}
-func (op *OperationWithOptionalMetadataWithMetadata[T]) GetSignature() (tz.Option[tz.Signature], error) {
+func (op *OperationWithOptionalMetadataWithMetadata[T]) GetSignature() (mv.Option[mv.Signature], error) {
 	if sig, ok := op.Signature.CheckUnwrap(); ok {
-		return tz.Some[tz.Signature](sig), nil
+		return mv.Some[mv.Signature](sig), nil
 	}
-	return tz.None[tz.Signature](), nil
+	return mv.None[mv.Signature](), nil
 }
 
 type OperationWithOptionalMetadataWithoutMetadata[T core.OperationContents] struct {
-	Contents  []T                             `tz:"dyn" json:"contents"`
-	Signature tz.Option[*tz.GenericSignature] `json:"signature"`
+	Contents  []T                             `mv:"dyn" json:"contents"`
+	Signature mv.Option[*mv.GenericSignature] `json:"signature"`
 }
 
 func (ops *OperationWithOptionalMetadataWithoutMetadata[T]) Operations() []core.OperationContents {
@@ -80,9 +80,9 @@ func (ops *OperationWithOptionalMetadataWithoutMetadata[T]) Operations() []core.
 }
 
 func (*OperationWithOptionalMetadataWithoutMetadata[T]) OperationWithOptionalMetadataContents() {}
-func (op *OperationWithOptionalMetadataWithoutMetadata[T]) GetSignature() (tz.Option[tz.Signature], error) {
+func (op *OperationWithOptionalMetadataWithoutMetadata[T]) GetSignature() (mv.Option[mv.Signature], error) {
 	if sig, ok := op.Signature.CheckUnwrap(); ok {
-		return tz.Some[tz.Signature](sig), nil
+		return mv.Some[mv.Signature](sig), nil
 	}
-	return tz.None[tz.Signature](), nil
+	return mv.None[mv.Signature](), nil
 }

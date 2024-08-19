@@ -1,10 +1,10 @@
 package proto_017_PtNairob
 
 import (
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_016_PtMumbai"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
 )
 
 type SmartRollupOriginate = proto_016_PtMumbai.SmartRollupOriginate
@@ -25,12 +25,12 @@ type SmartRollupExecuteOutboxMessageContentsAndResult = proto_016_PtMumbai.Smart
 type SmartRollupRecoverBondContentsAndResult = proto_016_PtMumbai.SmartRollupRecoverBondContentsAndResult
 
 type SmartRollupCementResultContents struct {
-	ConsumedMilligas tz.BigUint                    `json:"consumed_milligas"`
+	ConsumedMilligas mv.BigUint                    `json:"consumed_milligas"`
 	InboxLevel       int32                         `json:"inbox_level"`
-	CommitmentHash   *tz.SmartRollupCommitmentHash `json:"commitment_hash"`
+	CommitmentHash   *mv.SmartRollupCommitmentHash `json:"commitment_hash"`
 }
 
-func (r *SmartRollupCementResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
+func (r *SmartRollupCementResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
 
 type SmartRollupCementResult interface {
 	core.ManagerOperationResult

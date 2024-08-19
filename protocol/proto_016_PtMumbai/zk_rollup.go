@@ -3,10 +3,10 @@ package proto_016_PtMumbai
 import (
 	"math/big"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
-	"github.com/ecadlabs/gotez/v2/protocol/proto_015_PtLimaPt"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_015_PtLimaPt"
 )
 
 type ZkRollupOrigination = proto_015_PtLimaPt.ZkRollupOrigination
@@ -25,11 +25,11 @@ func (op *ZkRollupOriginationContentsAndResult) GetMetadata() any {
 
 type ZkRollupPublishResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas tz.BigUint `json:"consumed_milligas"`
-	Size             tz.BigInt  `json:"size"`
+	ConsumedMilligas mv.BigUint `json:"consumed_milligas"`
+	Size             mv.BigInt  `json:"size"`
 }
 
-func (r *ZkRollupPublishResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
+func (r *ZkRollupPublishResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
 func (r *ZkRollupPublishResultContents) EstimateStorageSize(constants core.Constants) *big.Int {
 	return r.Size.Int()
 }
@@ -63,54 +63,54 @@ func (op *ZkRollupPublishContentsAndResult) GetMetadata() any {
 //json:kind=OperationKind()
 type ZkRollupUpdate struct {
 	ManagerOperation
-	ZkRollup *tz.ZkRollupAddress    `json:"zk_rollup"`
+	ZkRollup *mv.ZkRollupAddress    `json:"zk_rollup"`
 	Update   ZkRollupUpdateContents `json:"update"`
 }
 
 func (*ZkRollupUpdate) OperationKind() string { return "zk_rollup_update" }
 
 type ZkRollupUpdateContents struct {
-	PendingPis []*PendingPiElem `tz:"dyn" json:"pending_pis"`
-	PrivatePis []*PrivatePiElem `tz:"dyn" json:"private_pis"`
+	PendingPis []*PendingPiElem `mv:"dyn" json:"pending_pis"`
+	PrivatePis []*PrivatePiElem `mv:"dyn" json:"private_pis"`
 	FeePi      FeePi            `json:"fee_pi"`
-	Proof      tz.Bytes         `tz:"dyn" json:"proof"`
+	Proof      mv.Bytes         `mv:"dyn" json:"proof"`
 }
 
 type PendingPiElem struct {
-	Key string    `tz:"dyn" json:"key"`
+	Key string    `mv:"dyn" json:"key"`
 	Pi  PendingPi `json:"pi"`
 }
 
-type ZkRollupScalar = tz.Bytes32
+type ZkRollupScalar = mv.Bytes32
 
 type PendingPi struct {
-	NewState     tz.Bytes       `tz:"dyn" json:"new_state"`
+	NewState     mv.Bytes       `mv:"dyn" json:"new_state"`
 	Fee          ZkRollupScalar `json:"fee"`
 	ExitValidity bool           `json:"exit_validity"`
 }
 
 type PrivatePiElem struct {
-	Key string    `tz:"dyn" json:"key"`
+	Key string    `mv:"dyn" json:"key"`
 	Pi  PrivatePi `json:"pi"`
 }
 
 type PrivatePi struct {
-	NewState tz.Bytes       `tz:"dyn" json:"new_state"`
+	NewState mv.Bytes       `mv:"dyn" json:"new_state"`
 	Fee      ZkRollupScalar `json:"fee"`
 }
 
 type FeePi struct {
-	NewState tz.Bytes `tz:"dyn" json:"new_state"`
+	NewState mv.Bytes `mv:"dyn" json:"new_state"`
 }
 
 type ZkRollupUpdateResultContents struct {
 	BalanceUpdates
-	ConsumedMilligas    tz.BigUint `json:"consumed_milligas"`
-	PaidStorageSizeDiff tz.BigInt  `json:"paid_storage_size_diff"`
+	ConsumedMilligas    mv.BigUint `json:"consumed_milligas"`
+	PaidStorageSizeDiff mv.BigInt  `json:"paid_storage_size_diff"`
 }
 
-func (r *ZkRollupUpdateResultContents) GetConsumedMilligas() tz.BigUint { return r.ConsumedMilligas }
-func (r *ZkRollupUpdateResultContents) GetPaidStorageSizeDiff() tz.BigInt {
+func (r *ZkRollupUpdateResultContents) GetConsumedMilligas() mv.BigUint { return r.ConsumedMilligas }
+func (r *ZkRollupUpdateResultContents) GetPaidStorageSizeDiff() mv.BigInt {
 	return r.PaidStorageSizeDiff
 }
 func (r *ZkRollupUpdateResultContents) EstimateStorageSize(constants core.Constants) *big.Int {

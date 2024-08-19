@@ -1,6 +1,6 @@
 package core
 
-import tz "github.com/ecadlabs/gotez/v2"
+import mv "github.com/mavryk-network/gomav/v2"
 
 type Constants interface {
 	GetProofOfWorkNonceSize() uint8
@@ -14,12 +14,12 @@ type Constants interface {
 	GetMichelsonMaximumTypeSize() uint16
 	GetBlocksPerCycle() int32
 	GetBlocksPerCommitment() int32
-	GetHardGasLimitPerOperation() tz.BigInt
-	GetHardGasLimitPerBlock() tz.BigInt
+	GetHardGasLimitPerOperation() mv.BigInt
+	GetHardGasLimitPerBlock() mv.BigInt
 	GetProofOfWorkThreshold() int64
 	GetOriginationSize() int32
-	GetCostPerByte() tz.BigUint
-	GetHardStorageLimitPerOperation() tz.BigInt
+	GetCostPerByte() mv.BigUint
+	GetHardStorageLimitPerOperation() mv.BigInt
 	GetQuorumMin() int32
 	GetQuorumMax() int32
 	GetMinProposalQuorum() int32

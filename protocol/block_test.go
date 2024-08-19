@@ -6,16 +6,16 @@ import (
 	"path/filepath"
 	"testing"
 
-	tz "github.com/ecadlabs/gotez/v2"
-	"github.com/ecadlabs/gotez/v2/encoding"
-	"github.com/ecadlabs/gotez/v2/protocol"
-	"github.com/ecadlabs/gotez/v2/protocol/core"
+	mv "github.com/mavryk-network/gomav/v2"
+	"github.com/mavryk-network/gomav/v2/encoding"
+	"github.com/mavryk-network/gomav/v2/protocol"
+	"github.com/mavryk-network/gomav/v2/protocol/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 type protoTestData struct {
-	proto  *tz.ProtocolHash
+	proto  *mv.ProtocolHash
 	blocks []string
 }
 
