@@ -21,7 +21,7 @@ type protoTestData struct {
 
 var testData = []protoTestData{
 	{
-		proto: &core.Proto019PtParisB,
+		proto: &core.Proto002PtBoreas,
 		blocks: []string{
 			"83409",
 			"83410",
@@ -36,97 +36,12 @@ var testData = []protoTestData{
 		},
 	},
 	{
-		proto: &core.Proto018Proxford,
+		proto: &core.Proto001PtAtLas,
 		blocks: []string{
 			"494220",
 			"494221",
 			"494222",
 			"494223",
-		},
-	},
-	{
-		proto: &core.Proto017PtNairob,
-		blocks: []string{
-			"10404",
-			"10413",
-			"577841",
-			"621690",
-			"649626",
-			"650438",
-			"650456",
-			"7921",
-		},
-	},
-	{
-		proto: &core.Proto016PtMumbai,
-		blocks: []string{
-			"3279466",
-			"3549429",
-			"3596415",
-			"3615666",
-			"3514591",
-			"181313",
-			"298135",
-			"298154",
-			"327682",
-			"332053",
-			"332064",
-			"332066",
-			"332075",
-			"332090",
-			"332091",
-			"332093",
-			"332470",
-			"332530",
-			"332534",
-			"39524",
-			"41157",
-			"41821",
-		},
-	},
-	{
-		proto: &core.Proto015PtLimaPt,
-		blocks: []string{
-			"2981889",
-			"2981890",
-			"2981891",
-			"2981892",
-		},
-	},
-	{
-		proto: &core.Proto014PtKathma,
-		blocks: []string{
-			"2736129",
-			"2736130",
-			"2736131",
-			"2736132",
-		},
-	},
-	{
-		proto: &core.Proto013PtJakart,
-		blocks: []string{
-			"2490369",
-			"2490370",
-			"2490371",
-			"2490372",
-			"2490373",
-			"2490374",
-			"2490375",
-			"2490376",
-		},
-	},
-	{
-		proto: &core.Proto012Psithaca,
-		blocks: []string{
-			"2244609",
-			"2244610",
-			"2244611",
-			"2244612",
-			"2244613",
-			"2244614",
-			"2244615",
-			"2244616",
-			//"tlnt_2173954",
 		},
 	},
 }
@@ -165,7 +80,7 @@ func TestBlock(t *testing.T) {
 
 var headerTestData = []protoTestData{
 	{
-		proto: &core.Proto016PtMumbai,
+		proto: &core.Proto001PtAtLas,
 		blocks: []string{
 			"3279466",
 		},

@@ -5,34 +5,16 @@ import (
 
 	mv "github.com/mavryk-network/gomav/v2"
 	"github.com/mavryk-network/gomav/v2/protocol/core"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_012_Psithaca"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_013_PtJakart"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_014_PtKathma"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_015_PtLimaPt"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_016_PtMumbai"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_017_PtNairob"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_018_Proxford"
-	"github.com/mavryk-network/gomav/v2/protocol/proto_019_PtParisB"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_001_PtAtLas"
+	"github.com/mavryk-network/gomav/v2/protocol/proto_002_PtBoreas"
 )
 
 func NewConstants(proto *mv.ProtocolHash) (constants core.Constants, err error) {
 	switch *proto {
-	case core.Proto019PtParisB:
-		constants = new(proto_019_PtParisB.Constants)
-	case core.Proto018Proxford:
-		constants = new(proto_018_Proxford.Constants)
-	case core.Proto017PtNairob:
-		constants = new(proto_017_PtNairob.Constants)
-	case core.Proto016PtMumbai:
-		constants = new(proto_016_PtMumbai.Constants)
-	case core.Proto015PtLimaPt:
-		constants = new(proto_015_PtLimaPt.Constants)
-	case core.Proto014PtKathma:
-		constants = new(proto_014_PtKathma.Constants)
-	case core.Proto013PtJakart:
-		constants = new(proto_013_PtJakart.Constants)
-	case core.Proto012Psithaca:
-		constants = new(proto_012_Psithaca.Constants)
+	case core.Proto002PtBoreas:
+		constants = new(proto_002_PtBoreas.Constants)
+	case core.Proto001PtAtLas:
+		constants = new(proto_001_PtAtLas.Constants)
 	default:
 		return nil, fmt.Errorf("gomav: NewConstants: unknown protocol version %d", proto)
 	}

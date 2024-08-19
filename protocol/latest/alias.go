@@ -2,11 +2,11 @@ package latest
 
 import (
 	"github.com/mavryk-network/gomav/v2/protocol/core"
-	latest "github.com/mavryk-network/gomav/v2/protocol/proto_018_Proxford"
+	latest "github.com/mavryk-network/gomav/v2/protocol/proto_001_PtAtLas"
 )
 
 var (
-	Protocol               = core.Proto017PtNairob
+	Protocol               = core.Proto001PtAtLas
 	NewRunOperationRequest = latest.NewRunOperationRequest
 	NewUnsignedOperation   = latest.NewUnsignedOperation
 	NewSignedOperation     = latest.NewSignedOperation
